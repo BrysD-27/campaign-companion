@@ -1,73 +1,11 @@
-# React + TypeScript + Vite
+# Campaign Companion
+Is a unified session management tool for both the DM and the players at their table. The system centers on two views: a DM Dashboard and a Player View, with enough screens and features to keep a team busy for a full quarter.
+Key features include:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Session Prep Workspace — a structured pre-session interface where the DM organizes encounters, NPC profiles, location descriptions, and DM notes, all tied to the current session.
+- Live Session Mode — a simplified "at the table" view showing initiative tracker, HP manager, condition tags, and a shared party log visible to players.
+- NPC & Faction Registry — a searchable index of named characters with relationship tags, last-seen location, and DM notes vs. player-visible lore.
+- World Codex — a lore wiki-style section for locations, factions, and historical events, with toggles for what players can see.
+- Session Recap Generator — a post-session screen where the DM logs key events, decisions made, and XP/loot awarded, which automatically populates into a party-facing recap.
+- Character Sheet Viewer — a read-only or editable character profile screen for players with HP, stats, inventory, and session notes
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
