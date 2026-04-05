@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import './App.css'
 import HomePage from './pages/HomePage'
 
-function App() {
+function App({ children }: { children: React.ReactNode }) {
   return (
     <>
-    <HomePage />
+      <HomePage children={children} />
     </>
   )
 }

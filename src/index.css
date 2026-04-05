@@ -6,24 +6,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-background-light: #f4f0eb;
-  --color-background-dark: #0f0e11;
-  --color-surface-light: #ffffff;
-  --color-surface-dark: #1a1825;
-  --color-border-light: #e2d9ce;
-  --color-border-dark: #2e2b3a;
-  --color-primary: #7c5cbf;
-  --color-primary-hover: #6a4aab;
-  --color-text-light: #1c1917;
-  --color-text-dark: #e8e3f0;
-  --color-muted-light: #78716c;
-  --color-muted-dark: #6b6880;
-  --color-danger: #c0392b;
-  --color-success: #2e7d52;
-  --color-live: #d97706;
-}
-
 :root {
   --color-background-light: #f4f0eb;
   --color-background-dark: #0f0e11;
@@ -41,12 +23,14 @@
   --color-success: #2e7d52;
   --color-live: #d97706;
   --bg-color: var(--color-background-light);
-  --text-color: var(var(--color-text-light));
-  --background: oklch(1 0 0);
+  --text-color: var(--color-text-light);
+  --border-color: var(--color-border-light);
+
+  --background: var(--bg-color);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: var(--bg-color);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -65,15 +49,20 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar: var(--bg-color);
+  --sidebar-foreground: var(--color-text-light);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: var(var(--border-color));
   --sidebar-ring: oklch(0.708 0 0);
+
+  --gap: calc(.25rem*6);
+  --spacing: .25rem;
+  --header-height: calc(var(--spacing)*14);
 }
 
 [date-theme="dark"] {
@@ -167,10 +156,25 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
+}
+
+main {
+  width: 100%;
+}
+
+header {
+  border-bottom: 2px solid var(--border-color);
+}
+
+.container-wrapper {
+  width: 100%;
+  margin-inline: auto;
 }
