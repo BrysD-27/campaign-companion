@@ -1,9 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { BadgeCheckIcon, BellIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 
-export function AppHeader() {
+function AppHeader() {
     return (
         <header className="top-0 z-50 w-full bg-background">
             <div className="container-wrapper px-6 group-has-data-[slot=designer]/layout:max-w-none 3xl:fixed:px-0">
@@ -19,7 +18,7 @@ export function AppHeader() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" className="rounded-full">
-                                    <UserIcon/>
+                                    <UserIcon />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
@@ -50,3 +49,5 @@ export function AppHeader() {
         </header>
     );
 }
+
+export default AppHeader

@@ -1,9 +1,8 @@
-import { AppHeader } from '@/components/app-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
 import { ChevronRightIcon, DotIcon, MoveRightIcon, PlusIcon, UsersIcon } from 'lucide-react'
-import './HomePage.css'
+import AppHeader from '@/components/app-header'
 
 function HomePage({ children }: { children: React.ReactNode }) {
     return (
