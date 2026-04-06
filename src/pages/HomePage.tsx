@@ -12,11 +12,11 @@ function HomePage({ children }: { children: React.ReactNode }) {
             <main className='flex min-h-0 flex-1 flex-col'>
                 <div className='mx-auto flex w-full max-w-[80rem] min-w-0 flex-col flex-1 gap-6 px-4 py-6 md:px-0 lg:py-8'>
                     <div className='flex flex-1 justify-between md:justify-start md:gap-6'>
-                        <Button variant={'outline'}>
+                        <Button>
                             <PlusIcon />
                             Create a campaign
                         </Button>
-                        <Button variant={'outline'}>
+                        <Button>
                             <MoveRightIcon />
                             Join a campaign
                         </Button>
