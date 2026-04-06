@@ -37,7 +37,7 @@
   --destructive: oklch(54.333% 0.174 29.681);
   --destructive-foreground: oklch(100% 0 0);
 
-  --border: oklch(88% 0.01 70);
+  --border: oklch(88% 0.01 70) !important;
   --input: oklch(88% 0.01 70);
   --ring: oklch(42% 0.09 180);
 
@@ -167,6 +167,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+[data-slot="sidebar-container"] {
+  height: calc(100vh - var(--header-height)) !important;
+  top: unset !important;
 }
 
 main {

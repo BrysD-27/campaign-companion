@@ -11,7 +11,7 @@ const LoginPage = () => {
     const { token, isLoading } = useAuth()
 
     if (isLoading) return <AppSpinner />
-    if (token) return <Navigate to="/" replace />
+    // if (token) return <Navigate to="/" replace />
 
     return (
         <div className='h-150 flex justify-center items-center'>

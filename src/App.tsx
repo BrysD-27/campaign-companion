@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ProtectedRoute from './components/protected-route'
 import { AuthProvider } from './context/AuthContext'
+import Campaigns from './pages/campaigns'
 import HomePage from './pages/home-page'
 import LoginPage from './pages/login-page'
 
@@ -21,7 +22,7 @@ function App({ children }: { children: React.ReactNode }) {
 
             <Route path="/campaigns/:id/*" element={
               <ProtectedRoute>
-                <>Nowhere</>
+                <Campaigns children={children} />
               </ProtectedRoute>
             } />
           </Routes>

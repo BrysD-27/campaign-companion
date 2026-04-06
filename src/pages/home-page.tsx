@@ -25,7 +25,7 @@ function HomePage({ children }: { children: React.ReactNode }) {
                     </div>
                     <div className='flex w-full max-w flex-col gap-6'>
                         <Item variant="outline" asChild>
-                            <a href="#">
+                            <a href="/campaigns/1" >
                                 <ItemContent>
                                     <ItemTitle>Vale of Thorns</ItemTitle>
                                     <ItemDescription>
