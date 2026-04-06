@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronDown } from "lucide-react"
 
-export function AppSidebar() {
+function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
@@ -49,3 +49,5 @@ export function AppSidebar() {
         </Sidebar>
     )
 }
+
+export default AppSidebar
