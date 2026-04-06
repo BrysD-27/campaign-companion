@@ -17,12 +17,14 @@ function AppHeader() {
             <div className="container-wrapper px-6 group-has-data-[slot=designer]/layout:max-w-none 3xl:fixed:px-0">
                 <div className="flex h-(--header-height) items-center **:data-[slot=separator]:h-4! group-has-data-[slot=designer]/layout:fixed:max-w-none 3xl:fixed:container">
                     {isCampaignRoute && (
-                        <Button variant={'outline'} className="me-2" onClick={() => navigate('/')}>
-                            <ChevronLeft />
-                            {!isMoble && ('Campaigns')}
-                        </Button>
+                        <>
+                            <Button variant={'outline'} className="me-2" onClick={() => navigate('/')}>
+                                <ChevronLeft />
+                                {!isMoble && ('Campaigns')}
+                            </Button>
+                            <span className="text-muted-foreground">&#9474;</span>
+                        </>
                     )}  
-                        <span className="text-muted-foreground">&#9474;</span>
                     <div
                         className="p-1 items-center justify-center rounded-lg border border-transparent bg-clip-padding font-medium whitespace-nowrap active:not-aria-[haspopup]:translate-y-px lg:flex"
                     >
