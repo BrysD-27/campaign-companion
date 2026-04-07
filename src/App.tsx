@@ -2,13 +2,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ProtectedRoute from './components/protected-route'
 import { AuthProvider } from './context/AuthContext'
+import { LoadingProvider } from './hooks/use-loading'
 import Campaigns from './pages/campaigns'
 import HomePage from './pages/home-page'
 import LoginPage from './pages/login-page'
 
 function App({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <LoadingProvider>
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -28,7 +29,7 @@ function App({ children }: { children: React.ReactNode }) {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
-    </>
+    </LoadingProvider>
   )
 }
 

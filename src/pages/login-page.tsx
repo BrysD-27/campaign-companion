@@ -1,17 +1,19 @@
 // src/pages/LoginPage.tsx
-import AppSpinner from '@/components/app-spinner'
 import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
-import { Navigate } from 'react-router-dom'
+import { useLoading } from '@/hooks/use-loading'
+import { useEffect } from 'react'
 
 const LoginPage = () => {
-    const { token, isLoading } = useAuth()
+    const { token, isLoading } = useAuth();
+    const { setLoading } = useLoading();
 
-    if (isLoading) return <AppSpinner />
-    // if (token) return <Navigate to="/" replace />
+    useEffect(() => {
+        setLoading(isLoading);
+    }, [isLoading]);
 
     return (
         <div className='h-150 flex justify-center items-center'>

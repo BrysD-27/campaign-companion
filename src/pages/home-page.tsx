@@ -1,10 +1,11 @@
+import AppHeader from '@/components/app-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
 import { ChevronRightIcon, DotIcon, MoveRightIcon, PlusIcon, UsersIcon } from 'lucide-react'
-import AppHeader from '@/components/app-header'
 
 function HomePage({ children }: { children: React.ReactNode }) {
+
     return (
         <>
             <AppHeader />
@@ -24,7 +25,7 @@ function HomePage({ children }: { children: React.ReactNode }) {
                         <h5 className='font-semibold'>Your Campaigns</h5>
                     </div>
                     <div className='flex w-full max-w flex-col gap-6'>
-                        <Item variant="outline" asChild>
+                        <Item variant="outline" asChild className='shadow-sm'>
                             <a href="/campaigns/1" >
                                 <ItemContent>
                                     <ItemTitle>Vale of Thorns</ItemTitle>
@@ -52,7 +53,68 @@ function HomePage({ children }: { children: React.ReactNode }) {
                                 </ItemActions>
                             </a>
                         </Item>
-                        <Item variant="outline" asChild>
+                        <Item variant="outline" asChild className='shadow-sm'>
+                            <a href="#">
+                                <ItemContent>
+                                    <ItemTitle>The Shattered Crown</ItemTitle>
+                                    <ItemDescription>
+                                        <span className='flex items-center'>
+                                            <Badge variant="outline">Player</Badge>
+                                            <DotIcon />
+                                            <span className='text-xs'>
+                                                Session 12 &middot; Ended
+                                            </span>
+                                        </span>
+                                    </ItemDescription>
+                                </ItemContent>
+                                <ItemActions>
+                                    <div className='flex items-center'>
+                                        <UsersIcon className='size-3 me-1' />
+                                        <span className='text-xs'>
+                                            4
+                                        </span>
+                                    </div>
+                                    <span className='text-xs'>
+                                        2 days ago
+                                    </span>
+                                    <ChevronRightIcon className="size-4" />
+                                </ItemActions>
+                            </a>
+                        </Item>
+                    </div>
+                    <div>
+                        <h5 className='font-semibold'>Archived Campaigns</h5>
+                    </div>
+                    <div className='flex w-full max-w flex-col gap-6'>
+                        <Item variant="outline" asChild className='shadow-sm'>
+                            <a href="/campaigns/1" >
+                                <ItemContent>
+                                    <ItemTitle>Vale of Thorns</ItemTitle>
+                                    <ItemDescription>
+                                        <span className='flex items-center'>
+                                            <Badge variant="outline">Dungeon Master</Badge>
+                                            <DotIcon />
+                                            <span className='text-xs'>
+                                                Session 7 is live
+                                            </span>
+                                        </span>
+                                    </ItemDescription>
+                                </ItemContent>
+                                <ItemActions>
+                                    <div className='flex items-center'>
+                                        <UsersIcon className='size-3 me-1' />
+                                        <span className='text-xs'>
+                                            3
+                                        </span>
+                                    </div>
+                                    <span className='text-xs'>
+                                        Active today
+                                    </span>
+                                    <ChevronRightIcon className="size-4" />
+                                </ItemActions>
+                            </a>
+                        </Item>
+                        <Item variant="outline" asChild className='shadow-sm'>
                             <a href="#">
                                 <ItemContent>
                                     <ItemTitle>The Shattered Crown</ItemTitle>

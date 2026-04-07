@@ -33,7 +33,7 @@ function AppHeader() {
                     <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="rounded-full">
+                                <Button variant="ghost" size="icon" className="rounded-full shadow-sm border border-sidebar-border">
                                     <UserIcon />
                                 </Button>
                             </DropdownMenuTrigger>
