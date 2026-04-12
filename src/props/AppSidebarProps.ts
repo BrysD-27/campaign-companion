@@ -1,10 +1,10 @@
 export interface AppSidebarProps {
-  campaignTitle: string
-  role: 'DM' | 'Player'
+  campaignTitle: string | undefined;
+  role: string | undefined;
   sections: Section[];
 }
 export interface Section {
-  id: number
-  title: string
-  subSections: Section[]
+  id: number;
+  title: string;
+  subSections: Section[];
 }

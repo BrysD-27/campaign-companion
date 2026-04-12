@@ -16,7 +16,7 @@
   --background: oklch(96% 0.01 80);
   --foreground: oklch(15% 0.01 50);
 
-  --card: oklch(100% 0 0);
+  --card: rgb(243 243 242);
   --card-foreground: oklch(15% 0.01 50);
 
   --popover: oklch(96% 0.01 80);
@@ -207,7 +207,9 @@ header {
   padding-top: calc(var(--spacing) * 2);
   padding-bottom: calc(var(--spacing) * 2);
 }
-
+[data-side="left"] {
+  border-color: var(--border);
+}
 [data-slot="sidebar-menu-sub-button"] {
   padding-top: calc(var(--spacing) * 1) !important;
   padding-bottom: calc(var(--spacing) * 1) !important;

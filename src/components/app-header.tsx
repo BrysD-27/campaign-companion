@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { BadgeCheckIcon, BellIcon, ChevronLeft, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,9 +9,9 @@ function AppHeader() {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const isMoble = useIsMobile();
+    const { logout } = useAuth();
 
     const isCampaignRoute = pathname.startsWith('/campaigns/');
-
 
     return (
         <header className="top-0 z-50 w-full bg-background">
@@ -53,7 +54,7 @@ function AppHeader() {
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="focus:bg-red-600">
+                                <DropdownMenuItem className="focus:bg-red-600" onClick={logout}>
                                     <LogOutIcon />
                                     Sign Out
                                 </DropdownMenuItem>

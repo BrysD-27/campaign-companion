@@ -1,210 +1,97 @@
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar
 } from "@/components/ui/sidebar"
-import type { AppSidebarProps, Section } from "@/props/AppSidebarProps"
-import { BookOpen, ChevronRight, EarthIcon, List, MapIcon, Plus } from "lucide-react"
+import type { AppSidebarProps } from "@/props/AppSidebarProps"
+import { EarthIcon, List, Plus } from "lucide-react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 
 function AppSidebar({ campaignTitle, role, sections }: AppSidebarProps) {
-    const navigate = useNavigate()
-    const { id: campaignId } = useParams()
-    const { pathname } = useLocation()
+  const navigate = useNavigate();
+  const { campaignId } = useParams();
+  const { pathname } = useLocation();
 
-    const isActive = (path: string) => pathname === path
-
-    return (
-        <Sidebar>
-            <SidebarHeader>
-                <div className="px-2 py-1">
-                    <p className="text-sm font-medium text-foreground">{campaignTitle}</p>
-                    <p className="text-xs text-muted-foreground">
-                        {role === 'DM' ? 'Dungeon Master' : 'Player'}
-                    </p>
-                </div>
-            </SidebarHeader>
-
-            <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    isActive={isActive(`/campaigns/${campaignId}/sessions`)}
-                                    onClick={() => navigate(`/campaigns/${campaignId}/sessions`)}
-                                >
-                                    <List />
-                                    Sessions
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    isActive={isActive(`/campaigns/${campaignId}/map`)}
-                                    onClick={() => navigate(`/campaigns/${campaignId}/map`)}
-                                >
-                                    <EarthIcon />
-                                    World Map
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-
-                <SidebarGroup>
-                    <SidebarGroupLabel>Lore</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {sections.map((section) => (
-                                <SidebarSectionItem
-                                    key={section.id}
-                                    section={section}
-                                    campaignId={campaignId!}
-                                    isActive={isActive}
-                                    navigate={navigate}
-                                />
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
-
-            {role === 'DM' && (
-                <SidebarFooter>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton onClick={() => console.log('add section')}>
-                                <Plus />
-                                Add section
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarFooter>
-            )}
-        </Sidebar>
-    )
-}
-
-const SidebarSectionItem = ({
-  section,
-  campaignId,
-  isActive,
-  navigate,
-}: {
-  section: Section
-  campaignId: string
-  isActive: (path: string) => boolean
-  navigate: (path: string) => void
-}) => {
-  if (section.subSections.length > 0) {
-    return (
-      <Collapsible asChild>
-        <SidebarMenuItem>
-          <CollapsibleTrigger asChild>
-            <SidebarMenuButton
-              isActive={isActive(`/campaigns/${campaignId}/sections/${section.id}`)}
-              onClick={() => navigate(`/campaigns/${campaignId}/sections/${section.id}`)}
-            >
-              <BookOpen />
-              {section.title}
-              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-
-          <CollapsibleContent>
-            <SidebarMenuSub>
-              <SidebarSubTree
-                sections={section.subSections}
-                campaignId={campaignId}
-                isActive={isActive}
-                navigate={navigate}
-              />
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
-    )
-  }
+  const isActive = (path: string) => pathname === path
 
   return (
-    <SidebarMenuItem key={section.id}>
-      <SidebarMenuButton
-        isActive={isActive(`/campaigns/${campaignId}/sections/${section.id}`)}
-        onClick={() => navigate(`/campaigns/${campaignId}/sections/${section.id}`)}
-      >
-        <BookOpen />
-        {section.title}
-      </SidebarMenuButton>
-    </SidebarMenuItem>
-  )
-}
+    <Sidebar className="border border-sidebar-border">
+      <SidebarHeader>
+        <SidebarMenuButton onClick={() => navigate(`/campaigns/${campaignId}`)}
+          isActive={isActive(`/campaigns/${campaignId}`)}>
+          <div className="px-2 py-1">
+            <p className="text-sm font-medium text-foreground">{campaignTitle}</p>
+            <p className="text-xs text-muted-foreground">
+              {role === 'DM' ? 'Dungeon Master' : 'Player'}
+            </p>
+          </div>
+        </SidebarMenuButton>
+      </SidebarHeader>
 
-const SidebarSubTree = ({
-  sections,
-  campaignId,
-  isActive,
-  navigate,
-}: {
-  sections: Section[]
-  campaignId: string
-  isActive: (path: string) => boolean
-  navigate: (path: string) => void
-}) => {
-  return (
-    <>
-      {sections.map((section) =>
-        section.subSections.length > 0 ? (
-
-          <Collapsible key={section.id} asChild>
-            <SidebarMenuSubItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuSubButton
-                  isActive={isActive(`/campaigns/${campaignId}/sections/${section.id}`)}
-                  onClick={() => navigate(`/campaigns/${campaignId}/sections/${section.id}`)}
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={isActive(`/campaigns/${campaignId}/sessions`)}
+                  onClick={() => navigate(`/campaigns/${campaignId}/sessions`)}
                 >
-                  {section.title}
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuSubButton>
-              </CollapsibleTrigger>
+                  <List />
+                  Sessions
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={isActive(`/campaigns/${campaignId}/map`)}
+                  onClick={() => navigate(`/campaigns/${campaignId}/map`)}
+                >
+                  <EarthIcon />
+                  World Map
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
 
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  <SidebarSubTree
-                    sections={section.subSections}
-                    campaignId={campaignId}
-                    isActive={isActive}
-                    navigate={navigate}
-                  />
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </SidebarMenuSubItem>
-          </Collapsible>
+        <SidebarGroup>
+          <SidebarGroupLabel>Lore</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {sections.map((section) => (
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={() => navigate(`/campaigns/${campaignId}/sections/${section.id}`)}>
+                    {/* <Icon /> */}
+                    {section.title}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
 
-        ) : (
-
-          <SidebarMenuSubItem key={section.id}>
-            <SidebarMenuSubButton
-              isActive={isActive(`/campaigns/${campaignId}/sections/${section.id}`)}
-              onClick={() => navigate(`/campaigns/${campaignId}/sections/${section.id}`)}
-            >
-              {section.title}
-            </SidebarMenuSubButton>
-          </SidebarMenuSubItem>
-
-        )
+      {role === 'DM' && (
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => console.log('add section')}>
+                <Plus />
+                Add section
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
       )}
-    </>
+    </Sidebar>
   )
 }
 

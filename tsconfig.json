@@ -9,7 +9,6 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
     "erasableSyntaxOnly": true,
     "paths": {
       "@/*": [

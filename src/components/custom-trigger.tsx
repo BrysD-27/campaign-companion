@@ -1,13 +1,15 @@
-import { useSidebar } from "@/components/ui/sidebar"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "./ui/button"
+import { useSidebar } from "@/components/ui/sidebar";
+import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 export function CustomTrigger() {
-  const { toggleSidebar, state, isMobile } = useSidebar();
+  const { toggleSidebar, open, isMobile } = useSidebar();
 
   return (
-    <div onClick={toggleSidebar} className="absolute top-1/2 px-1 py-3 border rounded-sm border-l-0 rounded-s-none hover:bg-[#e8e4dd] border-sidebar-border">
-        { isMobile ? <ChevronRight/> : state == 'collapsed' ? <ChevronRight/> : <ChevronLeft /> }
+    <div className="absolute top-3/8 left-0">
+      <Button variant={"outline"} className="border-l-0 rounded-l-none" onClick={toggleSidebar}>
+        {isMobile ? <PanelLeftOpenIcon /> : open ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
+      </Button>
     </div>
   )
 }
