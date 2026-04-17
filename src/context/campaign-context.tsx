@@ -1,0 +1,14 @@
+import { createContext, useContext } from 'react';
+import { type CampaignResponse } from '@/types/campaign';
+
+interface CampaignContextValue {
+  campaign: CampaignResponse;
+}
+
+export const CampaignContext = createContext<CampaignContextValue | null>(null);
+
+export function useCampaignContext() {
+  const ctx = useContext(CampaignContext);
+  if (!ctx) throw new Error('useCampaignContext must be used within CampaignProvider');
+  return ctx;
+}
