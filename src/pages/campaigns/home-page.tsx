@@ -1,16 +1,15 @@
-import AppHeader from '@/components/app-header'
 import CreateCampaignModal from '@/components/create-campaign-modal'
+import AppHeader from '@/components/layout/app-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/context/auth-context'
 import { useLoading } from '@/hooks/use-loading'
 import { api } from '@/lib/api'
 import type { CampaignResponse } from '@/types/campaign'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronRightIcon, CircleSlash, DotIcon, MoveRightIcon, PlusIcon, UsersIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 function getLastActiveLabel(date: string | Date): string {
     const now = new Date();
@@ -27,7 +26,7 @@ function getLastActiveLabel(date: string | Date): string {
 }
 
 
-function HomePage({ children }: { children: React.ReactNode }) {
+function HomePage() {
     const { token } = useAuth();
     const { setLoading } = useLoading();
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -72,7 +71,7 @@ function HomePage({ children }: { children: React.ReactNode }) {
                                     <ItemContent>
                                         <ItemTitle>No active campaigns found</ItemTitle>
                                         <ItemDescription>
-                                            Create or Join a campaign to get started.
+                                            Create or Join a campaign to get started
                                         </ItemDescription>
                                     </ItemContent>
                                 </Item>
@@ -173,7 +172,7 @@ function HomePage({ children }: { children: React.ReactNode }) {
                     }
                 </div>
             </main>
-            <CreateCampaignModal dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}/>
+            <CreateCampaignModal dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
         </>
     )
 }

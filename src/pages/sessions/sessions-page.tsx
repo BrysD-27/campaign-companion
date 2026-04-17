@@ -1,8 +1,7 @@
-// src/pages/campaign/SessionsPage.tsx
-import { useParams }    from 'react-router-dom'
-import { useQuery }     from '@tanstack/react-query'
-import { useAuth }      from '@/context/AuthContext'
-import { api }          from '@/lib/api'
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '@/context/auth-context'
+import { api } from '@/lib/api'
 
 const SessionsPage = () => {
   const { campaignId } = useParams()

@@ -1,4 +1,4 @@
-import AppSpinner from "./app-spinner";
+import AppSpinner from "@/components/app-spinner";
 
 function AppLoadingOverlay({ isLoading }: { isLoading: boolean }) {
     if (!isLoading) return null;

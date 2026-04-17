@@ -25,7 +25,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setToken(stored)
           setUser(data)
         })
-        .catch(() => localStorage.removeItem('cc_token'))
+        .catch(() => {
+          localStorage.removeItem('cc_token');
+          logout();
+        })
         .finally(() => setIsLoading(false))
       setToken(stored)
     } else {

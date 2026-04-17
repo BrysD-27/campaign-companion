@@ -12,8 +12,10 @@ export const api = {
         })
 
         if (!res.ok) {
-            const error = await res.json()
-            throw new Error(error.error ?? 'Something went wrong')
+            const errorJson = await res.json();
+            const error = new Error(errorJson.error ?? 'Something went wrong') as any;
+            error.email = errorJson.email;
+            throw error;
         }
 
         return res.json()
@@ -32,5 +34,36 @@ export const api = {
         }
 
         return res.json()
+    },
+    put: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(body)
+        })
+
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error ?? 'Something went wrong')
+        }
+
+        return res.json()
+    },
+
+    delete: async (endpoint: string, token?: string): Promise<void> => {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'DELETE',
+            headers: {
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
+        })
+
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error ?? 'Something went wrong')
+        }
     }
 }

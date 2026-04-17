@@ -2,12 +2,13 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/context/auth-context'
 import { useLoading } from '@/hooks/use-loading'
 import { api } from '@/lib/api'
 import type { AuthResponse } from '@/types/auth'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const RegisterPage = () => {
     const { login, token, isLoading } = useAuth();
@@ -37,6 +38,7 @@ const RegisterPage = () => {
             const data = await api.post<AuthResponse>('/auth/register', { email, password })
             login(data)
             navigate(redirect, { replace: true })
+            toast.success('Account registered. Verify email before continuing.');
         } catch (err: any) {
             setError(err.message)
         } finally {

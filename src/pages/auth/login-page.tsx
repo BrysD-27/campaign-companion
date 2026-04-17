@@ -2,13 +2,14 @@ import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/context/auth-context'
 import { useLoading } from '@/hooks/use-loading'
 import { api } from '@/lib/api'
 import type { AuthResponse } from '@/types/auth'
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const LoginPage = () => {
     const { login, token, isLoading } = useAuth();
@@ -21,6 +22,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [unverified, setUnverified] = useState<string | null>(null);
 
     useEffect(() => {
         if (token) {
@@ -38,6 +40,9 @@ const LoginPage = () => {
             navigate(redirect, { replace: true })
         } catch (err: any) {
             setError(err.message)
+            if (err.message?.toLowerCase().includes('verified')) {
+                setUnverified(err.email);
+            }
         } finally {
             setLoading(false)
         }
@@ -46,14 +51,30 @@ const LoginPage = () => {
     const handleGoogleSuccess = async (credentialResponse: any) => {
         setError(null)
         try {
-            console.log(credentialResponse)
             const data = await api.post<AuthResponse>('/auth/google', {
                 idToken: credentialResponse.credential
             })
             login(data)
             navigate(redirect, { replace: true })
         } catch (err: any) {
+            setError(err.message);
+            if (err.email) {
+                setUnverified(err.email);
+            }
+        }
+    }
+
+    const handleVerificationLinkSend = async (email: string) => {
+        setError(null)
+        setLoading(true)
+        try {
+            await api.post<string>('/auth/resend-verification', email);
+            toast.success('Email verification link sent')
+        } catch (err: any) {
             setError(err.message)
+        } finally {
+            setLoading(false)
+            setUnverified(null);
         }
     }
 
@@ -74,13 +95,17 @@ const LoginPage = () => {
                         Enter your email below to login to your account
                     </CardDescription>
                     <CardAction>
-                        <Button variant="link" onClick={handleRegisterLink}>Sign Up</Button>
+                        <Button variant="link" onClick={handleRegisterLink} className='cursor-pointer'>Sign Up</Button>
                     </CardAction>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='text-sm text-destructive'>
                     {error && (
-                        <p className="text-sm text-destructive">{error}</p>
+                        <p>{error}</p>
                     )}
+                    {
+                        unverified &&
+                        <Button variant="link" onClick={() => handleVerificationLinkSend(unverified)} className='cursor-pointer p-0'>Send Verification Link</Button>
+                    }
                 </CardContent>
                 <CardContent>
                     <form>
@@ -101,8 +126,8 @@ const LoginPage = () => {
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
                                     <a
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline cursor-pointer"
+                                        onClick={() => navigate('/forgot-password', { replace: true })}
                                     >
                                         Forgot your password?
                                     </a>

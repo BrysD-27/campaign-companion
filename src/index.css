@@ -16,7 +16,7 @@
   --background: oklch(96% 0.01 80);
   --foreground: oklch(15% 0.01 50);
 
-  --card: rgb(243 243 242);
+  --card: oklch(96% 0.01 80);
   --card-foreground: oklch(15% 0.01 50);
 
   --popover: oklch(96% 0.01 80);
@@ -65,6 +65,16 @@
 
   --font-sans: "Inter Variable", sans-serif;
   --font-heading: var(--font-sans);
+
+  --normal-bg: #1a1a24 !important;
+  --normal-border: #2e2e42;
+  --normal-text: #f0eeff;
+  --success-bg: #1a1a24;
+  --success-border: #7c5cbf;
+  --success-text: #f0eeff;
+  --error-bg: #1a1a24;
+  --error-border: #ef4444;
+  --error-text: #f0eeff;
 }
 
 .dark {
@@ -218,4 +228,26 @@ header {
 [data-sidebar="menu-button"][data-state="open"] svg:last-child, 
 [data-sidebar="menu-sub-button"][aria-expanded="true"] svg:last-child {
   transform: rotate(90deg);
+}
+
+[data-sonner-toast] {
+    background-color: var(--secondary) !important;
+    border-color: var(--border) !important;
+    color: var(--foreground) !important;
+}
+
+[data-sonner-toast][data-type='success'] {
+    border-left: 4px solid var(--accent) !important;
+}
+
+[data-sonner-toast][data-type='error'] {
+    border-left: 4px solid #ef4444 !important;
+}
+
+[data-sonner-toast] [data-title] {
+    color: var(--foreground) !important;
+}
+
+[data-sonner-toast] [data-description] {
+    color: var(--foreground) !important;
 }

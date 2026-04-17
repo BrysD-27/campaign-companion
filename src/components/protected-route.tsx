@@ -1,5 +1,5 @@
 // src/components/ProtectedRoute.tsx
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/context/auth-context'
 import { Navigate } from 'react-router-dom'
 import AppSpinner from './app-spinner'
 

@@ -1,4 +1,4 @@
-import AppLoadingOverlay from "@/components/app-loading-overlay";
+import AppLoadingOverlay from "@/components/layout/app-loading-overlay";
 import { createContext, useContext, useState } from "react";
 
 const LoadingContext = createContext<{
