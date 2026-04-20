@@ -211,12 +211,12 @@ export function NewEntryCard({ campaignId, sectionId, token, sortOrder, onClose 
     return (
         <div className="text-sm border border-border rounded-lg">
             <div className="p-5">
-                <div className="border-b mb-3 pb-2">
-                    <div className="flex gap-2 mb-2">
+                <div className="border-b mb-3">
+                    <div className='flex gap-2 mb-4'>
                         {(['write', 'preview'] as const).map((t) => (
                             <Button key={t}
                                 variant={tab === t ? 'default' : 'outline'}
-                                className={`text-sm py-1 px-3 capitalize transition-colors`}
+                                className={`text-sm border-b-2 -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                                 onClick={() => handleTabChange(t)}>
                                 {t}
                             </Button>
@@ -320,12 +320,12 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM }: EntryCa
         <div className="border border-border rounded-lg text-sm">
             {editing ? (
                 <div className="p-5">
-                    <div className="border-b mb-3 pb-2">
-                        <div className='flex gap-2 mb-2'>
+                    <div className="border-b mb-3">
+                        <div className='flex gap-2 mb-4'>
                             {(['write', 'preview'] as const).map((t) => (
                                 <Button key={t} onClick={() => handleTabChange(t)}
                                     variant={tab === t ? 'default' : 'outline'}
-                                    className={`text-sm pb-1 border-b-2 -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
+                                    className={`text-sm border-b-2 -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
                                     {t}
                                 </Button>
                             ))}
