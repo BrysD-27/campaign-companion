@@ -1,12 +1,6 @@
-export interface EntryBlockResponse {
-    entryBlockId: number;
-    content: string;
-    isDmOnly: boolean;
-}
-
 export interface EntryResponse {
     entryId: number;
-    title: string;
+    isPinned: boolean;
 }
 
 export interface AncestryItem {
@@ -30,7 +24,7 @@ export interface SectionResponse {
     isSystem: boolean;
     isDmOnly: boolean;
     sortOrder: number;
-    blocks: EntryBlockResponse[];
+    isPinned: boolean;
     subSections: SectionResponse[];
     entries: EntryResponse[];
     ancestry: AncestryItem[];
@@ -43,4 +37,13 @@ export interface CreateSectionRequest {
     icon?: string;
     isDmOnly: boolean;
     sortOrder: number;
+}
+
+export interface UpdateSectionRequest {
+    title: string;
+    icon?: string;
+}
+
+export interface ShareSectionRequest {
+    campaignMemberIds: number[];
 }

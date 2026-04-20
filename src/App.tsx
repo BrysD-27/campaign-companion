@@ -65,7 +65,6 @@ function App() {
                   {/* <Route path="sessions/:sessionId" element={<SessionDetailPage />} />
                   <Route path="map" element={<WorldMapPage />} /> */}
                   <Route path="sections/:sectionId" element={<SectionPage />} />
-                  {/* <Route path="entries/:entryId" element={<EntryPage />} /> */}
                 </Route>
               </Routes>
             </BrowserRouter>

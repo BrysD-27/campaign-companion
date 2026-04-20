@@ -69,7 +69,7 @@ const LoginPage = () => {
         setLoading(true)
         try {
             await api.post<string>('/auth/resend-verification', email);
-            toast.success('Email verification link sent')
+            toast.success('Email verification link sent.')
         } catch (err: any) {
             setError(err.message)
         } finally {

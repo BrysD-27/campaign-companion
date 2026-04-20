@@ -22,7 +22,7 @@ function CampaignsPage() {
       <div className="flex flex-1 overflow-hidden">
         <SidebarProvider>
           <AppSidebar />
-          <main className="flex-1 overflow-y-auto p-6 relative">
+          <main className="flex-1 min-h-screen overflow-y-auto p-6 relative mb-4">
             <CustomTrigger />
             {isActive ? <CampaignDashboardPage /> : <Outlet />}
           </main>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/auth-context";
+import { useOptionalCampaignContext } from "@/context/campaign-context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { BadgeCheckIcon, BellIcon, ChevronLeft, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,6 +11,8 @@ function AppHeader() {
     const { pathname } = useLocation();
     const isMoble = useIsMobile();
     const { logout, user } = useAuth();
+    const campaignCtx = useOptionalCampaignContext();
+    const memberAvatar = campaignCtx?.currentMember?.characterImageUrl;
 
     const isCampaignRoute = pathname.startsWith('/campaigns/');
 
@@ -34,8 +37,11 @@ function AppHeader() {
                     <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="rounded-full shadow-sm border border-border">
-                                    <UserIcon />
+                                <Button variant="ghost" size="icon" className="rounded-full shadow-sm border border-border overflow-hidden">
+                                    {memberAvatar
+                                        ? <img src={memberAvatar} alt="avatar" className="h-full w-full object-cover" />
+                                        : <UserIcon />
+                                    }
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">

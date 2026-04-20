@@ -15,22 +15,13 @@ export interface CampaignResponse {
 
 export interface CampaignMember {
     campaignMemberId: number
-    characterName: string
-    characterClass: string
-    avatarUrl: string | null
+    userId: number
+    username: string
     role: string
-}
-
-export interface CampaignDashboard {
-    campaignId: number
-    title: string
-    description: string | null
-    dmName: string
-    sessionCount: number
-    entryCount: number
-    joinCode: string
-    joinLink: string
-    members: CampaignMember[]
+    characterName: string | null
+    characterImageUrl: string | null
+    joinedAt: string
+    displayName: string
 }
 
 export interface Campaign {

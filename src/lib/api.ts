@@ -35,6 +35,7 @@ export const api = {
 
         return res.json()
     },
+
     put: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
         const res = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'PUT',
@@ -53,12 +54,34 @@ export const api = {
         return res.json()
     },
 
-    delete: async (endpoint: string, token?: string): Promise<void> => {
+    patch: async <T>(endpoint: string, body: unknown, token?: string): Promise<T | null> => {
+        const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(body)
+        })
+        
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error ?? 'Something went wrong')
+        }
+
+        if (res.status === 204) return null;
+
+        return res.json()
+    },
+
+    delete: async (endpoint: string, token?: string, body?: unknown): Promise<void> => {
         const res = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'DELETE',
             headers: {
+                ...(body ? { 'Content-Type': 'application/json' } : {}),
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            ...(body ? { body: JSON.stringify(body) } : {})
         })
 
         if (!res.ok) {
