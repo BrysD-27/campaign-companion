@@ -1,4 +1,9 @@
-import type { MemberShareResponse } from './sections';
+export interface MemberShareResponse {
+  campaignMemberId: number;
+  characterName: string;
+  characterImageUrl: string | null;
+  role: string;
+}
 
 export interface EntryResponse {
   entryId:   number;

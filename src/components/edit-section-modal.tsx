@@ -71,8 +71,8 @@ export function EditSectionModal({ open, onOpenChange, onSubmit, section, isPend
                                     type="button"
                                     onClick={() => setIcon(icon === name ? null : name)}
                                     className={cn(
-                                        "rounded-md p-2 transition-colors hover:bg-accent hover:text-accent-foreground flex justify-center",
-                                        icon === name && "bg-accent text-accent-foreground ring-1 ring-ring"
+                                        "rounded-md p-2 transition-colors hover:text-accent-foreground flex justify-center",
+                                        icon === name && "text-accent-foreground ring-1 ring-ring"
                                     )}
                                 >
                                     <IconComponent className="size-4" />

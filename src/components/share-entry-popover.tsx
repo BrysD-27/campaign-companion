@@ -1,15 +1,15 @@
-import { api } from "@/lib/api";
 import type { CampaignMember } from "@/types/campaign";
-import type { MemberShareResponse, SectionResponse } from "@/types/sections";
+import { api } from "@/lib/api";
+import type { EntryResponse } from "@/types/entry";
+import type { MemberShareResponse } from "@/types/entry";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, Loader2 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
+import { Checkbox } from "./ui/checkbox";
 
-interface ShareSectionPopoverProps {
-    section: SectionResponse;
+interface ShareEntryPopoverProps {
+    entry: EntryResponse;
     members: CampaignMember[];
     campaignId: string;
     sectionId: string;
@@ -41,23 +41,23 @@ function MemberRow({ member, isShared, onToggle, isPending }: {
     );
 }
 
-export function ShareSectionPopover({ section, members, campaignId, sectionId, token }: ShareSectionPopoverProps) {
+export function ShareEntryPopover({ entry, members, campaignId, sectionId, token }: ShareEntryPopoverProps) {
     const queryClient = useQueryClient();
     const players = members.filter(m => m.role !== 'dm');
 
-    const sharedIds = new Set(section.shares.map((s: MemberShareResponse) => s.campaignMemberId));
+    const sharedIds = new Set(entry.shares.map((s: MemberShareResponse) => s.campaignMemberId));
 
-    const invalidate = () => queryClient.invalidateQueries({ queryKey: ['section', sectionId] });
+    const invalidate = () => queryClient.invalidateQueries({ queryKey: ['entries', sectionId] });
 
     const { mutate: share, isPending: isSharing, variables: sharingId } = useMutation({
         mutationFn: (memberIds: number[]) =>
-            api.post(`/campaigns/${campaignId}/sections/${sectionId}/shares`, { campaignMemberIds: memberIds }, token),
+            api.post(`/campaigns/${campaignId}/entries/${entry.entryId}/shares`, { campaignMemberIds: memberIds }, token),
         onSuccess: invalidate,
     });
 
     const { mutate: unshare, isPending: isUnsharing, variables: unsharingId } = useMutation({
         mutationFn: (memberId: number) =>
-            api.delete(`/campaigns/${campaignId}/sections/${sectionId}/shares/${memberId}`, token),
+            api.delete(`/campaigns/${campaignId}/entries/${entry.entryId}/shares/${memberId}`, token),
         onSuccess: invalidate,
     });
 
@@ -76,10 +76,11 @@ export function ShareSectionPopover({ section, members, campaignId, sectionId, t
     return (
         <Popover>
             <PopoverTrigger render={
-                <Button variant="outline" size="sm">
-                    <Eye />
-                    Share
-                </Button>
+                <button
+                    title="Share"
+                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                    <Eye className="h-3.5 w-3.5" />
+                </button>
             }>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-3" align="end">

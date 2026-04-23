@@ -26,6 +26,7 @@ import { SortableContext, arrayMove, rectSortingStrategy, sortableKeyboardCoordi
 import { CSS } from '@dnd-kit/utilities'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+    ArrowUpDown,
     Check,
     GripVertical,
     Pencil,
@@ -36,7 +37,7 @@ import {
     X,
 } from 'lucide-react'
 
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -49,12 +50,12 @@ function SortableSubSection({ sub, campaignId, onNavigate, isDM, onPin }: { sub:
             ref={setNodeRef}
             style={style}
             onClick={onNavigate}
-            className="flex items-center justify-between p-3 rounded-lg border border-border group cursor-pointer hover:bg-accent transition-colors hover:text-primary-foreground"
+            className="flex items-center bg-card justify-between p-3 rounded-lg border border-border group cursor-pointer hover:bg-accent transition-colors"
         >
             <div>
                 <p className="text-sm font-medium">{sub.title}</p>
                 <div className="flex items-center gap-2 mt-1">
-                    <p className="text-xs text-muted-foreground transition-colors group-hover:text-primary-foreground">{sub.entries.length} entries</p>
+                    <p className="text-xs text-muted-foreground transition-colors">{sub.entries.length} entries</p>
                     {sub.isDmOnly && <Badge variant="secondary" className="text-xs py-0">DM only</Badge>}
                 </div>
             </div>
@@ -62,7 +63,7 @@ function SortableSubSection({ sub, campaignId, onNavigate, isDM, onPin }: { sub:
                 <button
                     onClick={(e) => { e.stopPropagation(); onPin(sub); }}
                     title={sub.isPinned ? 'Unpin' : 'Pin'}
-                    className={`group/pin p-1 rounded transition-all group-hover:text-primary-foreground hover:!bg-foreground/15 ${sub.isPinned ? 'opacity-100 text-primary' : 'opacity-100 xl:opacity-0 group-hover:opacity-100 text-muted-foreground/60'}`}
+                    className={`group/pin p-1 rounded transition-all hover:!bg-foreground/15 ${sub.isPinned ? 'opacity-100 text-primary' : 'opacity-100 xl:opacity-0 group-hover:opacity-100 text-muted-foreground/60'}`}
                 >
                     {sub.isPinned ? (
                         <>
@@ -78,7 +79,7 @@ function SortableSubSection({ sub, campaignId, onNavigate, isDM, onPin }: { sub:
                         {...attributes}
                         {...listeners}
                         onClick={(e) => e.stopPropagation()}
-                        className="h-4 w-4 text-muted-foreground/40 shrink-0 group-hover:text-primary-foreground cursor-grab active:cursor-grabbing touch-none"
+                        className="h-4 w-4 text-muted-foreground/40 shrink-0 cursor-grab active:cursor-grabbing touch-none"
                     />
                 )}
             </div>
@@ -219,15 +220,17 @@ const SectionPage = () => {
             <Breadcrumb>
                 <BreadcrumbList>
                     {section.ancestry.map((crumb) => (
-                        <BreadcrumbItem key={crumb.sectionId}>
-                            <BreadcrumbLink
-                                className="cursor-pointer"
-                                onClick={() => navigate(`/campaigns/${campaignId}/sections/${crumb.sectionId}`)}
-                            >
-                                {crumb.title}
-                            </BreadcrumbLink>
+                        <Fragment key={crumb.sectionId}>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink
+                                    className="cursor-pointer"
+                                    onClick={() => navigate(`/campaigns/${campaignId}/sections/${crumb.sectionId}`)}
+                                >
+                                    {crumb.title}
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
                             <BreadcrumbSeparator />
-                        </BreadcrumbItem>
+                        </Fragment>
                     ))}
                     <BreadcrumbItem>
                         <BreadcrumbPage>{section.title}</BreadcrumbPage>
@@ -327,7 +330,7 @@ const SectionPage = () => {
                                 isDM && (
                                     <button
                                         onClick={() => setSubsectionDialogOpen(true)}
-                                        className="flex items-center gap-2 p-3 rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                                        className="flex items-center gap-2 p-3 hover:bg-accent rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
                                     >
                                         <Plus className="h-4 w-4" />
                                         Add subsection
@@ -344,10 +347,16 @@ const SectionPage = () => {
                 <div className="flex items-center justify-between">
                     <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Entries</p>
                     {isDM && !addingEntry && (
-                        <Button variant="outline" size="sm" onClick={() => setAddingEntry(true)}>
-                            <Plus />
-                            Add entry
-                        </Button>
+                        <div className='flex flex-wrap items-center gap-2'>
+                            <Button variant="outline" size="sm">
+                                <ArrowUpDown />
+                                Reorder
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => setAddingEntry(true)}>
+                                <Plus />
+                                Add entry
+                            </Button>
+                        </div>
                     )}
                 </div>
                 <div className="space-y-3">
@@ -359,6 +368,7 @@ const SectionPage = () => {
                             sectionId={sectionId!}
                             token={token!}
                             isDM={isDM}
+                            members={members}
                         />
                     ))}
                     {addingEntry && (
@@ -373,7 +383,7 @@ const SectionPage = () => {
                     {isDM && !addingEntry && (
                         <button
                             onClick={() => setAddingEntry(true)}
-                            className="flex items-center gap-2 p-3 w-full rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                            className="flex items-center hover:bg-accent gap-2 p-3 w-full rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
                         >
                             <Plus className="h-4 w-4" />
                             Add entry

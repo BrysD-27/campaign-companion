@@ -22,6 +22,21 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from './ui/button'
+import { ShareEntryPopover } from './share-entry-popover'
+import type { CampaignMember } from '@/types/campaign'
+
+const getExtensions = () => [
+    StarterKit,
+    Underline,
+    Image,
+    Table.configure({ resizable: false }),
+    TableRow,
+    TableHeader,
+    TableCell,
+    TaskList,
+    TaskItem.configure({ nested: true }),
+    TextAlign.configure({ types: ['heading', 'paragraph'] }),
+]
 
 const EXTENSIONS = [
     StarterKit,
@@ -216,7 +231,7 @@ export function NewEntryCard({ campaignId, sectionId, token, sortOrder, onClose 
                         {(['write', 'preview'] as const).map((t) => (
                             <Button key={t}
                                 variant={tab === t ? 'default' : 'outline'}
-                                className={`text-sm border-b-2 -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                                className={`text-sm -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                                 onClick={() => handleTabChange(t)}>
                                 {t}
                             </Button>
@@ -245,15 +260,16 @@ interface EntryCardProps {
     sectionId: string
     token: string
     isDM: boolean
+    members: CampaignMember[]
 }
 
-export function EntryCard({ entry, campaignId, sectionId, token, isDM }: EntryCardProps) {
+export function EntryCard({ entry, campaignId, sectionId, token, isDM, members }: EntryCardProps) {
     const [editing, setEditing] = useState(false)
     const [tab, setTab] = useState<'write' | 'preview'>('write')
     const queryClient = useQueryClient()
     const savedContent = useRef(entry.content)
 
-    const editor = useEditor({ extensions: EXTENSIONS, content: parseContent(entry.content), editable: false })
+    const editor = useEditor({ extensions: getExtensions(), content: parseContent(entry.content), editable: false, shouldRerenderOnTransaction: true })
 
     useEffect(() => {
         if (editor && entry.entryId) {
@@ -325,7 +341,7 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM }: EntryCa
                             {(['write', 'preview'] as const).map((t) => (
                                 <Button key={t} onClick={() => handleTabChange(t)}
                                     variant={tab === t ? 'default' : 'outline'}
-                                    className={`text-sm border-b-2 -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
+                                    className={`text-sm -mb-[calc(0.5rem+1px)] capitalize transition-colors ${tab === t ? 'border-primary font-medium' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
                                     {t}
                                 </Button>
                             ))}
@@ -354,7 +370,7 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM }: EntryCa
                     <div className="px-2 py-3 flex flex-col items-center gap-1 absolute top-0 right-0">
                         <div className="sticky top-4 flex flex-col gap-1">
                             <button onClick={() => togglePin()} title={entry.isPinned ? 'Unpin' : 'Pin'}
-                                className={`group/pin p-1.5 rounded transition-colors hover:bg-muted ${entry.isPinned ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>
+                                className={`group/pin p-1.5 rounded flex justify-center transition-colors hover:bg-muted ${entry.isPinned ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>
                                 {entry.isPinned ? (
                                     <>
                                         <Pin className="h-3.5 w-3.5 fill-current group-hover/pin:hidden" />
@@ -365,10 +381,19 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM }: EntryCa
                                 )}
                             </button>
                             {isDM && (
-                                <button onClick={enterEdit} title="Edit"
-                                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-                                    <Pencil className="h-3.5 w-3.5" />
-                                </button>
+                                <>
+                                    <ShareEntryPopover
+                                        entry={entry}
+                                        members={members}
+                                        campaignId={campaignId}
+                                        sectionId={sectionId}
+                                        token={token}
+                                    />
+                                    <button onClick={enterEdit} title="Edit"
+                                        className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex justify-center ">
+                                        <Pencil className="h-3.5 w-3.5" />
+                                    </button>
+                                </>
                             )}
                         </div>
                     </div>

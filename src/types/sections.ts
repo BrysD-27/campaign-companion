@@ -1,19 +1,13 @@
-export interface EntryResponse {
-    entryId: number;
-    isPinned: boolean;
-}
+import type { EntryResponse, MemberShareResponse } from './entry';
+
+export type { EntryResponse };
 
 export interface AncestryItem {
     sectionId: number;
     title: string;
 }
 
-export interface MemberShareResponse {
-    campaignMemberId: number;
-    characterName: string;
-    characterImageUrl: string | null;
-    role: string;
-}
+export type { MemberShareResponse } from './entry';
 
 export interface SectionResponse {
     sectionId: number;

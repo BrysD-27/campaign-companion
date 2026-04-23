@@ -15,6 +15,7 @@ import ResetPasswordPage from './pages/auth/reset-password-page'
 import VerifyEmailPage from './pages/auth/verify-email-page'
 import CampaignsPage from './pages/campaigns/campaigns-page'
 import HomePage from './pages/campaigns/home-page'
+import MapsPage from './pages/maps/maps-page'
 import SectionPage from './pages/sections/section-page'
 import SessionsPage from './pages/sessions/sessions-page'
 
@@ -62,8 +63,8 @@ function App() {
                 }>
                   {/* child routes — each renders inside the Outlet */}
                   <Route path="sessions" element={<SessionsPage />} />
-                  {/* <Route path="sessions/:sessionId" element={<SessionDetailPage />} />
-                  <Route path="map" element={<WorldMapPage />} /> */}
+                  {/* <Route path="sessions/:sessionId" element={<SessionDetailPage />} /> */}
+                  <Route path="maps" element={<MapsPage />} />
                   <Route path="sections/:sectionId" element={<SectionPage />} />
                 </Route>
               </Routes>

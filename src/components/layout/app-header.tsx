@@ -10,14 +10,14 @@ function AppHeader() {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const isMoble = useIsMobile();
-    const { logout, user } = useAuth();
+    const { logout, } = useAuth();
     const campaignCtx = useOptionalCampaignContext();
     const memberAvatar = campaignCtx?.currentMember?.characterImageUrl;
 
     const isCampaignRoute = pathname.startsWith('/campaigns/');
 
     return (
-        <header className="top-0 z-50 w-full bg-background">
+        <header className="top-0 z-50 w-full bg-card">
             <div className="container-wrapper px-6 group-has-data-[slot=designer]/layout:max-w-none 3xl:fixed:px-0">
                 <div className="flex h-(--header-height) items-center **:data-[slot=separator]:h-4! group-has-data-[slot=designer]/layout:fixed:max-w-none 3xl:fixed:container">
                     {isCampaignRoute && (
@@ -36,13 +36,14 @@ function AppHeader() {
                     </div>
                     <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger render={
                                 <Button variant="ghost" size="icon" className="rounded-full shadow-sm border border-border overflow-hidden">
                                     {memberAvatar
                                         ? <img src={memberAvatar} alt="avatar" className="h-full w-full object-cover" />
                                         : <UserIcon />
                                     }
                                 </Button>
+                            }>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>

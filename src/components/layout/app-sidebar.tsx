@@ -20,7 +20,7 @@ import { useCampaignRole } from "@/hooks/use-campaign-role";
 import { api } from "@/lib/api";
 import type { CreateSectionRequest, SectionResponse } from "@/types/sections";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Calendar, Castle, Compass, Crown, Flag, Flame, Gem, Globe, ArrowLeftRight, List, type LucideIcon, Map, MapIcon, MessageSquare, Package, Pin, PinOff, Plus, ScrollText, Shield, Skull, Star, Sword, Swords, TreePine, Users, Zap } from "lucide-react";
+import { ArrowUpDown, BookOpen, Calendar, Castle, Compass, Crown, Flag, Flame, Gem, Globe, List, type LucideIcon, Map, MapIcon, MessageSquare, Package, Pin, PinOff, Plus, ScrollText, Shield, Skull, Star, Sword, Swords, TreePine, Users, Zap } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -143,8 +143,8 @@ function AppSidebar() {
                 </SidebarMenuItem>
                 <SidebarMenuItem key={'map'}>
                   <SidebarMenuButton
-                    isActive={isActive(`/campaigns/${campaign.campaignId}/map`)}
-                    onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/map`)}
+                    isActive={isActive(`/campaigns/${campaign.campaignId}/maps`)}
+                    onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/maps`)}
                   >
                     <MapIcon />
                     Maps
@@ -159,7 +159,7 @@ function AppSidebar() {
               Lore
               {isDM && sections.length > 1 && (
                 <button onClick={() => setReorderOpen(true)} className="text-muted-foreground transition-colors group/pin p-1 rounded transition-all hover:!bg-foreground/15">
-                  <ArrowLeftRight className="h-3 w-3" />
+                  <ArrowUpDown className="h-3 w-3" />
                 </button>
               )}
             </SidebarGroupLabel>

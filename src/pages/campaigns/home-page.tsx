@@ -80,7 +80,7 @@ function HomePage() {
                         {
                             active.map((campaign: CampaignResponse) => {
                                 return (
-                                    <Item key={campaign.campaignId} variant="outline" asChild className='shadow-sm'>
+                                    <Item key={campaign.campaignId} variant="outline" className='shadow-sm' render={
                                         <a href={"/campaigns/" + campaign.campaignId} >
                                             <ItemContent>
                                                 <ItemTitle>{campaign.title}</ItemTitle>
@@ -113,6 +113,7 @@ function HomePage() {
                                                 <ChevronRightIcon className="size-4" />
                                             </ItemActions>
                                         </a>
+                                    }>
                                     </Item>
                                 )
                             })
@@ -129,7 +130,7 @@ function HomePage() {
                                     {
                                         archived.map((campaign: CampaignResponse) => {
                                             return (
-                                                <Item variant="outline" asChild className='shadow-sm'>
+                                                <Item variant="outline" className='shadow-sm' render={
                                                     <a href="/campaigns/1" >
                                                         <ItemContent>
                                                             <ItemTitle>{campaign.title}</ItemTitle>
@@ -162,6 +163,7 @@ function HomePage() {
                                                             <ChevronRightIcon className="size-4" />
                                                         </ItemActions>
                                                     </a>
+                                                }>
                                                 </Item>
                                             )
                                         })
