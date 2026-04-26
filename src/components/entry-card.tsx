@@ -1,4 +1,5 @@
 import { api } from '@/lib/api'
+import type { CampaignMember } from '@/types/campaign'
 import type { EntryResponse } from '@/types/entry'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from '@tiptap/extension-image'
@@ -14,16 +15,18 @@ import { EditorContent, useEditor, type Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {
     AlignCenter, AlignLeft, AlignRight,
-    Bold, Heading1, Heading2, Heading3,
+    Bold,
+    Heading1, Heading2, Heading3,
     ImageIcon, Italic, List, ListOrdered, ListTodo,
     Loader2, Minus, Pencil, Pin, PinOff,
     Quote, Strikethrough, Table as TableIcon,
-    Underline as UnderlineIcon,
+    Trash2,
+    Underline as UnderlineIcon
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { Button } from './ui/button'
+import { DeleteEntryModal } from './delete-entry-modal'
 import { ShareEntryPopover } from './share-entry-popover'
-import type { CampaignMember } from '@/types/campaign'
+import { Button } from './ui/button'
 
 const getExtensions = () => [
     StarterKit,
@@ -213,7 +216,7 @@ export function NewEntryCard({ campaignId, sectionId, token, sortOrder, onClose 
     const { mutate: create, isPending } = useMutation({
         mutationFn: () => api.post(
             `/campaigns/${campaignId}/entries`,
-            { sectionId: parseInt(sectionId), content: JSON.stringify(editor!.getJSON()), isDmOnly: false, sortOrder },
+            { sectionId: parseInt(sectionId), content: JSON.stringify(editor!.getJSON()), isDmOnly: true, sortOrder },
             token
         ),
         onSuccess: () => {
@@ -266,6 +269,7 @@ interface EntryCardProps {
 export function EntryCard({ entry, campaignId, sectionId, token, isDM, members }: EntryCardProps) {
     const [editing, setEditing] = useState(false)
     const [tab, setTab] = useState<'write' | 'preview'>('write')
+    const [deleteOpen, setDeleteOpen] = useState(false)
     const queryClient = useQueryClient()
     const savedContent = useRef(entry.content)
 
@@ -310,6 +314,25 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM, members }
             editor?.setEditable(false)
             setEditing(false)
             setTab('write')
+        },
+    })
+
+    const { mutate: deleteEntry, isPending: isDeleting } = useMutation({
+        mutationFn: () => api.delete(`/campaigns/${campaignId}/entries/${entry.entryId}`, token),
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ['entries', sectionId] })
+            const previous = queryClient.getQueryData<EntryResponse[]>(['entries', sectionId])
+            queryClient.setQueryData<EntryResponse[]>(['entries', sectionId], (old = []) =>
+                old.filter(e => e.entryId !== entry.entryId)
+            )
+            return { previous }
+        },
+        onError: (_, __, ctx) => {
+            if (ctx?.previous) queryClient.setQueryData(['entries', sectionId], ctx.previous)
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['entries', sectionId] })
+            queryClient.invalidateQueries({ queryKey: ['section', sectionId] })
         },
     })
 
@@ -367,8 +390,8 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM, members }
                             : <p className="text-muted-foreground italic">No content yet.</p>
                         }
                     </div>
-                    <div className="px-2 py-3 flex flex-col items-center gap-1 absolute top-0 right-0">
-                        <div className="sticky top-4 flex flex-col gap-1">
+                    <div className="px-2 py-3 flex flex-col items-center gap-1 absolute top-0 right-0 h-full">
+                        <div className="sticky top-4 flex flex-col gap-1 h-full">
                             <button onClick={() => togglePin()} title={entry.isPinned ? 'Unpin' : 'Pin'}
                                 className={`group/pin p-1.5 rounded flex justify-center transition-colors hover:bg-muted ${entry.isPinned ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>
                                 {entry.isPinned ? (
@@ -393,12 +416,22 @@ export function EntryCard({ entry, campaignId, sectionId, token, isDM, members }
                                         className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex justify-center ">
                                         <Pencil className="h-3.5 w-3.5" />
                                     </button>
+                                    <button onClick={() => setDeleteOpen(true)} title="Delete"
+                                        className="p-1.5 rounded text-destructive hover:bg-destructive/10 transition-colors flex justify-center mt-auto">
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </button>
                                 </>
                             )}
                         </div>
                     </div>
                 </div>
             )}
+            <DeleteEntryModal
+                open={deleteOpen}
+                onOpenChange={setDeleteOpen}
+                onConfirm={deleteEntry}
+                isPending={isDeleting}
+            />
         </div>
     )
 }

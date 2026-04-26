@@ -41,7 +41,7 @@ interface CreateSectionModalProps {
 
 export function CreateSectionModal({ open, onOpenChange, onSubmit, isPending, parentSectionId }: CreateSectionModalProps) {
     const [title, setTitle] = useState('');
-    const [isDmOnly, setIsDmOnly] = useState(false);
+    const [isDmOnly, setIsDmOnly] = useState(true);
     const [icon, setIcon] = useState<string | null>(null);
 
     const handleSubmit = () => {
@@ -49,11 +49,11 @@ export function CreateSectionModal({ open, onOpenChange, onSubmit, isPending, pa
         onSubmit({ title, isDmOnly, sortOrder: 0, ...(icon ? { icon } : {}) });
         setTitle('');
         setIcon('');
-        setIsDmOnly(false);
+        setIsDmOnly(true);
     };
 
     return (
-        <Dialog open={open} onOpenChange={(v) => { if (!v) { setTitle(''); setIsDmOnly(false); setIcon(null); } onOpenChange(v); }}>
+        <Dialog open={open} onOpenChange={(v) => { if (!v) { setTitle(''); setIsDmOnly(true); setIcon(null); } onOpenChange(v); }}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Add section</DialogTitle>
@@ -79,8 +79,8 @@ export function CreateSectionModal({ open, onOpenChange, onSubmit, isPending, pa
                                         type="button"
                                         onClick={() => setIcon(icon === name ? null : name)}
                                         className={cn(
-                                            "rounded-md p-2 transition-colors hover:text-accent-foreground flex justify-center",
-                                            icon === name && "text-accent-foreground ring-1 ring-ring"
+                                            "rounded-md p-2 transition-colors hover:bg-accent flex justify-center",
+                                            icon === name && "text-primary-foreground bg-primary hover:bg-primary/80 ring-1 ring-ring"
                                         )}
                                     >
                                         <IconComponent className="size-4" />

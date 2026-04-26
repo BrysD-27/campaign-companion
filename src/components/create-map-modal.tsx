@@ -17,9 +17,9 @@ interface CreateMapModalProps {
 export function CreateMapModal({ open, onOpenChange, onSubmit, isPending }: CreateMapModalProps) {
     const [title, setTitle] = useState('');
     const [imageUrl, setImageUrl] = useState('');
-    const [isDmOnly, setIsDmOnly] = useState(false);
+    const [isDmOnly, setIsDmOnly] = useState(true);
 
-    const reset = () => { setTitle(''); setImageUrl(''); setIsDmOnly(false); };
+    const reset = () => { setTitle(''); setImageUrl(''); setIsDmOnly(true); };
 
     const handleSubmit = () => {
         if (!title.trim() || !imageUrl.trim()) return;

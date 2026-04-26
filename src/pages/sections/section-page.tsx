@@ -2,6 +2,7 @@ import { CreateSectionModal } from '@/components/create-section-modal'
 import { DeleteSectionModal } from '@/components/delete-section-modal'
 import { EditSectionModal } from '@/components/edit-section-modal'
 import { EntryCard, NewEntryCard } from '@/components/entry-card'
+import { ReorderEntriesModal } from '@/components/reorder-entries-modal'
 import SectionPageSkeleton from '@/components/section-page-skeleton'
 import { ShareSectionPopover } from '@/components/share-section-popover'
 import { Badge } from '@/components/ui/badge'
@@ -53,10 +54,12 @@ function SortableSubSection({ sub, campaignId, onNavigate, isDM, onPin }: { sub:
             className="flex items-center bg-card justify-between p-3 rounded-lg border border-border group cursor-pointer hover:bg-accent transition-colors"
         >
             <div>
-                <p className="text-sm font-medium">{sub.title}</p>
+                <p className="text-sm font-medium">
+                    {sub.title}
+                    {sub.isDmOnly && <Badge variant="secondary" className="text-xs py-0">DM only</Badge>}
+                </p>
                 <div className="flex items-center gap-2 mt-1">
                     <p className="text-xs text-muted-foreground transition-colors">{sub.entries.length} entries</p>
-                    {sub.isDmOnly && <Badge variant="secondary" className="text-xs py-0">DM only</Badge>}
                 </div>
             </div>
             <div className="flex items-center gap-1 shrink-0">
@@ -100,6 +103,7 @@ const SectionPage = () => {
     const [inlineEditing, setInlineEditing] = useState(false);
     const [orderedSubSections, setOrderedSubSections] = useState<SectionResponse[]>([]);
     const [addingEntry, setAddingEntry] = useState(false);
+    const [reorderEntriesOpen, setReorderEntriesOpen] = useState(false);
 
     const queryClient = useQueryClient();
 
@@ -199,6 +203,16 @@ const SectionPage = () => {
         }
     });
 
+    const { mutate: reorderEntries, isPending: isReorderEntriesPending } = useMutation({
+        mutationFn: (items: { entryId: number; sortOrder: number }[]) =>
+            api.patch(`/campaigns/${campaignId}/entries/reorder`, { entries: items }, token!),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['entries', sectionId] });
+            setReorderEntriesOpen(false);
+        },
+        onError: () => toast.error('Error reordering entries.'),
+    });
+
     const { mutate: createSection, isPending } = useMutation({
         mutationFn: (request: CreateSectionRequest) => {
             request.parentSectionId = parseInt(sectionId!);
@@ -263,6 +277,7 @@ const SectionPage = () => {
                     ) : (
                         <div className="flex items-center gap-2 group">
                             <h1 className="text-2xl font-medium">{section.title}</h1>
+                            {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
                             <Button
                                 size="icon" variant="ghost"
                                 className=""
@@ -273,7 +288,10 @@ const SectionPage = () => {
                         </div>
                     )
                 ) : (
-                    <h1 className="text-2xl font-medium">{section.title}</h1>
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-2xl font-medium">{section.title}</h1>
+                        {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
+                    </div>
                 )}
                 {
                     isDM && (
@@ -348,7 +366,7 @@ const SectionPage = () => {
                     <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Entries</p>
                     {isDM && !addingEntry && (
                         <div className='flex flex-wrap items-center gap-2'>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => setReorderEntriesOpen(true)}>
                                 <ArrowUpDown />
                                 Reorder
                             </Button>
@@ -426,6 +444,12 @@ const SectionPage = () => {
                 onSubmit={createSection}
                 isPending={isPending}
                 parentSectionId={section.sectionId} />
+            <ReorderEntriesModal
+                open={reorderEntriesOpen}
+                onOpenChange={setReorderEntriesOpen}
+                entries={entries}
+                onSave={reorderEntries}
+                isPending={isReorderEntriesPending} />
         </div>
     )
 }

@@ -72,13 +72,13 @@ export function ShareEntryPopover({ entry, members, campaignId, sectionId, token
             if (unsharedIds.length > 0) share(unsharedIds);
         }
     };
-
+    
     return (
         <Popover>
             <PopoverTrigger render={
                 <button
                     title="Share"
-                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                    className={`p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors  ${!entry.isDmOnly && 'text-primary'}`}>
                     <Eye className="h-3.5 w-3.5" />
                 </button>
             }>

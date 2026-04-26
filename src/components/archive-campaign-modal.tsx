@@ -44,7 +44,7 @@ function ArchiveCampaignModal({ dialogOpen, setDialogOpen }: { dialogOpen: boole
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
                         <p>Are you sure you want to archive <strong>{campaign.title}</strong>?</p>
-                        <p className="text-muted-foreground small">You can unarchive it anytime.</p>
+                        <p className="text-muted-foreground small">You can unarchive it at anytime.</p>
                     </div>
                 </div>
                 <DialogFooter>
