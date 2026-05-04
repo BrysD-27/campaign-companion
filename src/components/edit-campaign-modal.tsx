@@ -1,7 +1,8 @@
 import { useAuth } from "@/context/auth-context"
+import { useCampaignContext } from "@/context/campaign-context"
 import { useLoading } from "@/hooks/use-loading"
 import { api } from "@/lib/api"
-import type { Campaign, CampaignDashboard, CampaignResponse } from "@/types/campaign"
+import type { Campaign } from "@/types/campaign"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -11,8 +12,9 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
 
-function EditCampaignModal({ dialogOpen, setDialogOpen, campaign }: { dialogOpen: boolean, setDialogOpen: (open: boolean) => void, campaign: CampaignDashboard }) {
+function EditCampaignModal({ dialogOpen, setDialogOpen }: { dialogOpen: boolean, setDialogOpen: (open: boolean) => void }) {
     const { token } = useAuth();
+    let { campaign } = useCampaignContext();
     const [title, setTitle] = useState(campaign.title);
     const [description, setDescription] = useState(campaign.description);
     const queryClient = useQueryClient();
@@ -32,7 +34,7 @@ function EditCampaignModal({ dialogOpen, setDialogOpen, campaign }: { dialogOpen
             queryClient.setQueryData(['campaign', updatedCampaign.campaignId], updatedCampaign)
             queryClient.invalidateQueries({ queryKey: ['campaign'] })
             setDialogOpen(false);
-            toast.success('Campaign updated');
+            toast.success('Campaign updated.');
         },
         onError: () => {
             toast.error('Error updating campaign');

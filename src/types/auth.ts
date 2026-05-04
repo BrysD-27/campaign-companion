@@ -10,6 +10,12 @@ export interface AuthResponse {
     bio: string | null;
     avatarUrl: string | null;
   };
+  preferences: {
+    colorMode: string;
+    baseColor: string;
+    themeColor: string;
+    fontSize: string;
+  }
 }
 
 export interface LoginRequest {

@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/auth-context"
+import { useCampaignContext } from "@/context/campaign-context"
 import { useLoading } from "@/hooks/use-loading"
 import { api } from "@/lib/api"
-import type { CampaignDashboard } from "@/types/campaign"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
@@ -9,24 +9,25 @@ import { toast } from "sonner"
 import { Button } from "./ui/button"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 
-function DeleteCampaignModal({ dialogOpen, setDialogOpen, campaign }: { dialogOpen: boolean, setDialogOpen: (open: boolean) => void, campaign: CampaignDashboard }) {
+function ArchiveCampaignModal({ dialogOpen, setDialogOpen }: { dialogOpen: boolean, setDialogOpen: (open: boolean) => void }) {
     const { token } = useAuth();
+    const { campaign } = useCampaignContext();
     const queryClient = useQueryClient();
     const { setLoading } = useLoading();
     const navigate = useNavigate();
 
-    const { mutate: deleteCampaign, isPending } = useMutation({
+    const { mutate: archiveCampaign, isPending } = useMutation({
         mutationFn: () =>
-            api.delete(`/campaigns/${campaign.campaignId}`, token!),
+            api.patch(`/campaigns/${campaign.campaignId}/archive`, token!),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['campaigns'] });
             queryClient.invalidateQueries({ queryKey: ['campaign'] });
             setDialogOpen(false);
-            toast.success('Campaign deleted');
+            toast.success('Campaign archived.');
             navigate('/');
         },
         onError: () => {
-            toast.error('Error deleting Campaign.')
+            toast.error('Error archiving Campaign.')
         }
     });
 
@@ -38,20 +39,20 @@ function DeleteCampaignModal({ dialogOpen, setDialogOpen, campaign }: { dialogOp
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Delete Campaign</DialogTitle>
+                    <DialogTitle>Archive Campaign</DialogTitle>
                 </DialogHeader>
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
-                        <p>Are you sure you want to delete <strong>{campaign.title}</strong>?</p>
-                        <p className="text-muted-foreground small">This action cannot be undone.</p>
+                        <p>Are you sure you want to archive <strong>{campaign.title}</strong>?</p>
+                        <p className="text-muted-foreground small">You can unarchive it at anytime.</p>
                     </div>
                 </div>
                 <DialogFooter>
                     <Button variant='outline' onClick={() => setDialogOpen(false)}>
                         Cancel
                     </Button>
-                    <Button variant={"destructive"} onClick={() => deleteCampaign()} disabled={isPending}>
-                        Delete
+                    <Button onClick={() => archiveCampaign()} disabled={isPending}>
+                        Archive
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -59,4 +60,4 @@ function DeleteCampaignModal({ dialogOpen, setDialogOpen, campaign }: { dialogOp
     )
 }
 
-export default DeleteCampaignModal
+export default ArchiveCampaignModal

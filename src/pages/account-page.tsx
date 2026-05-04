@@ -11,10 +11,10 @@ function AccountPage() {
     const navigate = useNavigate();
     return (
         <div className="max-w-2xl mx-auto py-8 px-4 space-y-6">
-            <h1 className="text-2xl font-medium">Account</h1>
             <Button variant={"outline"} onClick={() => navigate(-1)}>
                 <ChevronLeft />
                 Back</Button>
+            <h1 className="text-2xl font-medium">Account</h1>
             {/* Profile */}
             <section className="border border-border rounded-lg p-5 space-y-4">
                 <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Profile</h2>

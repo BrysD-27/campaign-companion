@@ -1,25 +1,13 @@
-export interface EntryBlockResponse {
-    entryBlockId: number;
-    content: string;
-    isDmOnly: boolean;
-}
+import type { EntryResponse, MemberShareResponse } from './entry';
 
-export interface EntryResponse {
-    entryId: number;
-    title: string;
-}
+export type { EntryResponse };
 
 export interface AncestryItem {
     sectionId: number;
     title: string;
 }
 
-export interface MemberShareResponse {
-    campaignMemberId: number;
-    characterName: string;
-    characterImageUrl: string | null;
-    role: string;
-}
+export type { MemberShareResponse } from './entry';
 
 export interface SectionResponse {
     sectionId: number;
@@ -30,7 +18,7 @@ export interface SectionResponse {
     isSystem: boolean;
     isDmOnly: boolean;
     sortOrder: number;
-    blocks: EntryBlockResponse[];
+    isPinned: boolean;
     subSections: SectionResponse[];
     entries: EntryResponse[];
     ancestry: AncestryItem[];
@@ -43,4 +31,13 @@ export interface CreateSectionRequest {
     icon?: string;
     isDmOnly: boolean;
     sortOrder: number;
+}
+
+export interface UpdateSectionRequest {
+    title: string;
+    icon?: string;
+}
+
+export interface ShareSectionRequest {
+    campaignMemberIds: number[];
 }

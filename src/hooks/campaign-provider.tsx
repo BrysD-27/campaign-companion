@@ -1,7 +1,7 @@
 import { useAuth } from '@/context/auth-context';
 import { CampaignContext } from '@/context/campaign-context';
 import { api } from '@/lib/api';
-import { type CampaignResponse } from '@/types/campaign';
+import { type CampaignMember, type CampaignResponse } from '@/types/campaign';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,9 +14,21 @@ export function CampaignProvider({ children }: { children: React.ReactNode }) {
     const { setLoading } = useLoading();
     const navigate = useNavigate();
 
-    const { data: campaign, isPending, isError } = useQuery({
+    const { data: campaign, isPending: isCampaignPending, isError } = useQuery({
         queryKey: ['campaign', campaignId],
         queryFn: () => api.get<CampaignResponse>(`/campaigns/${campaignId}`, token!),
+        enabled: !!campaignId && !!token,
+    });
+
+    const { data: currentMember, isPending: isMemberPending } = useQuery({
+        queryKey: ['campaign-member', campaignId],
+        queryFn: () => api.get<CampaignMember>(`/campaigns/${campaignId}/me`, token!),
+        enabled: !!campaignId && !!token,
+    });
+
+    const { data: members, isPending: isMembersPending } = useQuery({
+        queryKey: ['campaign-members', campaignId],
+        queryFn: () => api.get<CampaignMember[]>(`/campaigns/${campaignId}/members`, token!),
         enabled: !!campaignId && !!token,
     });
 
@@ -28,14 +40,14 @@ export function CampaignProvider({ children }: { children: React.ReactNode }) {
     }, [isError]);
 
     useEffect(() => {
-        setLoading(isPending);
-    }, [isPending]);
+        setLoading(isCampaignPending || isMemberPending || isMembersPending);
+    }, [isCampaignPending, isMemberPending, isMembersPending]);
 
-    if (isPending || isError) return null;
-    if (!campaign) return null;
+    if (isCampaignPending || isMemberPending || isMembersPending || isError) return null;
+    if (!campaign || !currentMember || !members) return null;
 
     return (
-        <CampaignContext.Provider value={{ campaign }}>
+        <CampaignContext.Provider value={{ campaign, currentMember, members, isCampaignPending, isMemberPending, isMembersPending }}>
             {children}
         </CampaignContext.Provider>
     );

@@ -1,14 +1,10 @@
-import DeleteCampaignModal from '@/components/delete-campaign-modal'
+import ArchiveCampaignModal from '@/components/archive-campaign-modal'
 import EditCampaignModal from '@/components/edit-campaign-modal'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAuth } from '@/context/auth-context'
 import { useCampaignContext } from '@/context/campaign-context'
 import { useCampaignRole } from '@/hooks/use-campaign-role'
-import { api } from '@/lib/api'
-import type { CampaignDashboard } from '@/types/campaign'
-import { useQuery } from '@tanstack/react-query'
-import { Copy, Pencil, RefreshCw, Trash2, UserMinus } from 'lucide-react'
+import { Archive, Pencil, RefreshCw, UserMinus } from 'lucide-react'
 import { useState } from 'react'
 
 const avatarColors = [
@@ -19,21 +15,15 @@ const avatarColors = [
 ]
 
 const CampaignDashboardPage = () => {
-    const { campaign } = useCampaignContext();
+    const { campaign, members, isCampaignPending, isMemberPending, isMembersPending } = useCampaignContext();
     const { isDM } = useCampaignRole();
-    const { token } = useAuth();
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
 
+    const players = members.filter(m => m.role === 'player');
 
-    const { data: campaignDashboard, isLoading } = useQuery({
-        queryKey: ['campaign-dashboard', campaign.campaignId],
-        queryFn: () => api.get<CampaignDashboard>(`/campaigns/${campaign.campaignId}`, token!),
-    })
+    if (isCampaignPending || isMemberPending || isMembersPending) return <CampaignDashboardSkeleton />
 
-    const copyToClipboard = (text: string) => navigator.clipboard.writeText(text)
-
-    if (isLoading) return <CampaignDashboardSkeleton />
     if (!campaign) return <p className="p-6 text-sm text-muted-foreground">Campaign not found.</p>
 
     return (
@@ -43,7 +33,7 @@ const CampaignDashboardPage = () => {
             <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                     <h1 className="text-2xl font-medium">{campaign.title}</h1>
-                    <p className="text-sm text-muted-foreground">Dungeon Master — {campaign.role}</p>
+                    <p className="text-sm text-muted-foreground">Dungeon Master — {members.find(m => m.role === 'DM')?.displayName}</p>
                     {campaign.description && (
                         <p className="text-sm text-muted-foreground leading-relaxed max-w-xl pt-1">
                             {campaign.description}
@@ -60,11 +50,10 @@ const CampaignDashboardPage = () => {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                className="text-destructive border-destructive hover:bg-destructive/10"
-                                onClick={() => setDeleteDialogOpen(true)}
+                                onClick={() => setArchiveDialogOpen(true)}
                             >
-                                <Trash2 />
-                                Delete
+                                <Archive />
+                                Archive
                             </Button>
                         </div>
                     )
@@ -74,9 +63,9 @@ const CampaignDashboardPage = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3">
                 {[
-                    { label: 'Players', value: !campaign.members && 3 },
-                    { label: 'Sessions', value: campaign.sessionCount },
-                    { label: 'Lore entries', value: campaign.entryCount },
+                    { label: 'Players', value: players.length },
+                    { label: 'Sessions', value: 0 },
+                    { label: 'Lore entries', value: 0 },
                 ].map(({ label, value }) => (
                     <div key={label} className="bg-muted rounded-lg p-4">
                         <p className="text-2xl font-medium">{value}</p>
@@ -95,23 +84,25 @@ const CampaignDashboardPage = () => {
                     </div>
 
                     <div className="space-y-1">
-                        {campaign.members && campaign.members.map((member, i) => (
-                            <div key={member.campaignMemberId} className="flex items-center gap-3 py-2 border-b last:border-0">
+                        {players.map((player, i) => (
+                            <div key={player.campaignMemberId} className="flex items-center gap-3 py-2 border-b last:border-0">
                                 <div className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[i % avatarColors.length]}`}>
-                                    {member.characterName.slice(0, 2).toUpperCase()}
+                                    {player.displayName.slice(0, 2).toUpperCase()}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium truncate">{member.characterName}</p>
-                                    <p className="text-xs text-muted-foreground truncate">{member.characterClass}</p>
+                                    <p className="text-sm font-medium truncate">{player.displayName}</p>
+                                    <p className="text-xs text-muted-foreground truncate">{player.role}</p>
                                 </div>
-                                <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive shrink-0">
-                                    <UserMinus className="h-4 w-4" />
-                                </Button>
+                                {isDM && (
+                                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive shrink-0">
+                                        <UserMinus className="h-4 w-4" />
+                                    </Button>
+                                )}
                             </div>
                         ))}
 
-                        {campaign.members && campaign.members.length === 0 && (
-                            <p className="text-sm text-muted-foreground py-2">No players yet.</p>
+                        {players.length === 0 && (
+                            <p className="text-sm text-muted-foreground py-2">No players yet — invite some using the code or link to the right.</p>
                         )}
                     </div>
                 </div>
@@ -120,7 +111,7 @@ const CampaignDashboardPage = () => {
                 <div className="border border-border rounded-lg p-5 space-y-4">
                     <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Invite players</p>
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <p className="text-xs text-muted-foreground">Join code</p>
                         <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2">
                             <span className="font-mono text-base font-medium tracking-widest">
@@ -135,9 +126,9 @@ const CampaignDashboardPage = () => {
                                 Copy
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <p className="text-xs text-muted-foreground">Join link</p>
                         <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2 gap-2">
                             <span className="font-mono text-xs text-muted-foreground truncate">
@@ -153,7 +144,7 @@ const CampaignDashboardPage = () => {
                                 Copy
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
 
                     <Button variant="outline" size="sm" className="w-full">
                         <RefreshCw className="h-3 w-3" />
@@ -162,8 +153,8 @@ const CampaignDashboardPage = () => {
                 </div>
 
             </div>
-            <EditCampaignModal dialogOpen={editDialogOpen} setDialogOpen={setEditDialogOpen} campaign={campaign} />
-            <DeleteCampaignModal dialogOpen={deleteDialogOpen} setDialogOpen={setDeleteDialogOpen} campaign={campaign} />
+            <EditCampaignModal dialogOpen={editDialogOpen} setDialogOpen={setEditDialogOpen} />
+            <ArchiveCampaignModal dialogOpen={archiveDialogOpen} setDialogOpen={setArchiveDialogOpen} />
         </div>
     )
 }
