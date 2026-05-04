@@ -309,7 +309,7 @@ const SectionPage = () => {
                                 sectionId={sectionId!}
                                 token={token!}
                             />
-                            <Button variant="outline" size="sm" className="text-destructive border-destructive hover:bg-destructive/10" onClick={() => setDeleteDialogOpen(true)}>
+                            <Button variant="outline" size="sm" className="!text-destructive border-destructive hover:!bg-destructive/10" onClick={() => setDeleteDialogOpen(true)}>
                                 <Trash2 />
                                 Delete
                             </Button>

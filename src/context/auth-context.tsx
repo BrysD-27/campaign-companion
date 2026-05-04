@@ -8,6 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (data: AuthResponse) => void;
   logout: () => void;
+  updatePreferences: (prefs: AuthResponse['preferences']) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -48,8 +49,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   }
 
+  const updatePreferences = (prefs: AuthResponse['preferences']) => {
+    setUser(prev => prev ? { ...prev, preferences: prefs } : null)
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ token, user, login, logout, isLoading, updatePreferences }}>
       {children}
     </AuthContext.Provider>
   )

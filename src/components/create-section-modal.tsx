@@ -1,12 +1,12 @@
+import { cn } from "@/lib/utils";
 import type { CreateSectionRequest } from "@/types/sections";
-import { BookOpen, Calendar, Castle, Compass, Crown, Flame, Flag, Gem, Globe, type LucideIcon, Loader2, Map, MessageSquare, Package, ScrollText, Shield, Skull, Star, Swords, TreePine, Users, Zap, ShieldUser } from "lucide-react";
+import { BookOpen, Calendar, Castle, Compass, Crown, Flag, Flame, Gem, Globe, Loader2, Map, MessageSquare, Package, ScrollText, Shield, Skull, Star, Swords, TreePine, Users, Zap, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { cn } from "@/lib/utils";
 
 const SECTION_ICONS: { name: string; icon: LucideIcon }[] = [
     { name: 'Map', icon: Map },

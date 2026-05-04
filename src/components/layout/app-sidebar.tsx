@@ -20,7 +20,7 @@ import { useCampaignRole } from "@/hooks/use-campaign-role";
 import { api } from "@/lib/api";
 import type { CreateSectionRequest, SectionResponse } from "@/types/sections";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowUpDown, BookOpen, Calendar, Castle, Compass, Crown, Flag, Flame, Gem, Globe, List, type LucideIcon, Map, MapIcon, MessageSquare, Package, Pin, PinOff, Plus, ScrollText, Shield, Skull, Star, Sword, Swords, TreePine, Users, Zap } from "lucide-react";
+import { ArrowUpDown, BookOpen, Calendar, Castle, Compass, Crown, Flag, Flame, Gem, Globe, type LucideIcon, Map, MapIcon, MessageSquare, Package, Pin, PinOff, Plus, ScrollText, Shield, Skull, Star, Swords, TreePine, Users, Zap } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -109,7 +109,9 @@ function AppSidebar() {
       <Sidebar className="border border-border">
         <SidebarHeader>
           <SidebarMenuButton onClick={() => navigateTo(`/campaigns/${campaign.campaignId}`)}
-            isActive={isActive(`/campaigns/${campaign.campaignId}`)}>
+            isActive={isActive(`/campaigns/${campaign.campaignId}`)}
+            style={{ 'borderLeft': isActive(`/campaigns/${campaign.campaignId}`) ? '2px solid var(--primary)' : "2px solid transparent" }}
+          >
             <div className="px-2 py-1">
               <p className="text-sm font-medium text-foreground">{campaign.title}</p>
               <p className="text-xs text-muted-foreground">
@@ -126,24 +128,27 @@ function AppSidebar() {
                 <SidebarMenuItem key={'sessions'}>
                   <SidebarMenuButton
                     isActive={isActive(`/campaigns/${campaign.campaignId}/sessions`)}
+                    style={{ 'borderLeft': isActive(`/campaigns/${campaign.campaignId}/sessions`) ? '2px solid var(--primary)' : "2px solid transparent" }}
                     onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/sessions`)}
                   >
-                    <List />
+                    <Calendar />
                     Sessions
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem key={'inventory'}>
                   <SidebarMenuButton
                     isActive={isActive(`/campaigns/${campaign.campaignId}/inventory`)}
+                    style={{ 'borderLeft': isActive(`/campaigns/${campaign.campaignId}/inventory`) ? '2px solid var(--primary)' : "2px solid transparent" }}
                     onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/inventory`)}
                   >
-                    <Sword />
-                    Inventory
+                    <Gem />
+                    Items
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem key={'map'}>
                   <SidebarMenuButton
                     isActive={isActive(`/campaigns/${campaign.campaignId}/maps`)}
+                    style={{ 'borderLeft': isActive(`/campaigns/${campaign.campaignId}/maps`) ? '2px solid var(--primary)' : "2px solid transparent" }}
                     onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/maps`)}
                   >
                     <MapIcon />
@@ -169,6 +174,7 @@ function AppSidebar() {
                   <SidebarMenuItem key={section.sectionId}>
                     <SidebarMenuButton
                       isActive={isActive(`/campaigns/${campaign.campaignId}/sections/${section.sectionId}`)}
+                      style={{ 'borderLeft': isActive(`/campaigns/${campaign.campaignId}/sections/${section.sectionId}`) ? '2px solid var(--primary)' : "2px solid transparent" }}
                       onClick={() => navigateTo(`/campaigns/${campaign.campaignId}/sections/${section.sectionId}`)}>
                       <SectionIcon name={section.icon} />
                       {section.title}

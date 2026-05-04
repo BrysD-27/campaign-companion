@@ -16,6 +16,7 @@
   --color-live: #d97706;
   --color-danger: #c0392b;
   --color-success: #2e7d52;
+  --gold: #c9a25b;
 
   --font-sans: "Inter Variable", sans-serif;
   --font-heading: var(--font-sans);
@@ -140,6 +141,7 @@ button {
 }
 
 [data-sonner-toast] {
+  background-color: var(--background) !important;
   border-color: var(--border) !important;
   color: var(--foreground) !important;
 }
@@ -396,9 +398,11 @@ button {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

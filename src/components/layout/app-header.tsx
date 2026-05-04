@@ -3,9 +3,40 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { useAuth } from "@/context/auth-context";
 import { useOptionalCampaignContext } from "@/context/campaign-context";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { BadgeCheckIcon, BellIcon, ChevronLeft, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { BadgeCheckIcon, BellIcon, ChevronLeft, LogOutIcon, SettingsIcon, Star, UserIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+const sidebarStyles = {
+    brand: {
+        padding: "20px 20px 18px",
+        borderBottom: "1px solid var(--rule)",
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+    },
+    brandMark: {
+        width: 30, height: 30,
+        display: "grid", placeItems: "center",
+        border: "1px solid rgba(201,162,91,0.35)",
+        borderRadius: "8px",
+        boxShadow: "inset 0 0 12px rgba(201,162,91,0.15)",
+        color: "var(--gold)",
+    },
+    brandName: {
+        fontFamily: "var(--serif)",
+        fontSize: 17,
+        letterSpacing: 0.3,
+        color: "var(--ink)",
+        lineHeight: 1.1,
+    },
+    brandSub: {
+        fontFamily: "var(--mono)",
+        fontSize: 9.5,
+        letterSpacing: 1.4,
+        textTransform: "uppercase",
+        color: "var(--ink-mute)",
+        marginTop: 2,
+    },
+}
 function AppHeader() {
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -29,10 +60,13 @@ function AppHeader() {
                             <span className="text-muted">&#9474;</span>
                         </>
                     )}
-                    <div
-                        className="p-1 items-center justify-center rounded-lg border border-transparent bg-clip-padding font-medium whitespace-nowrap active:not-aria-[haspopup]:translate-y-px lg:flex"
-                    >
-                        Campaign Companion
+                    <div style={sidebarStyles.brand}>
+                        <div style={sidebarStyles.brandMark}>
+                            <Star size={14} stroke="var(--gold)" />
+                        </div>
+                        <div>
+                            <div style={sidebarStyles.brandName}>Campaign Companion</div>
+                        </div>
                     </div>
                     <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
                         <DropdownMenu>
@@ -61,7 +95,7 @@ function AppHeader() {
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="focus:bg-red-600" onClick={logout}>
+                                <DropdownMenuItem className="focus:bg-destructive focus:text-white" onClick={logout}>
                                     <LogOutIcon />
                                     Sign Out
                                 </DropdownMenuItem>
