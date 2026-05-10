@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Campaign Companion — Places & Maps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c1018; --bg-2:#0a0e15;
+    --surface:#141a26; --surface-2:#1a2030; --surface-3:#202637;
+    --ink:#e8e2d2; --ink-2:#c8c2b2; --ink-mute:#8a8676; --ink-dim:#5e5b52;
+    --rule:rgba(232,226,210,0.08); --rule-strong:rgba(232,226,210,0.16);
+    --gold:#c9a25b; --gold-deep:#8a6a2a;
+    --crimson:#8a3a3a; --crimson-deep:#5a2424;
+    --slate-blue:#5a7a9c;
+    --parchment:#d9c79a; --parchment-2:#c8b485; --parchment-shade:#a8956a;
+    --parchment-ink:#3a2d1a; --parchment-ink-mute:#6a553a;
+    --sea:#b5b08a;
+    --serif:"Cormorant Garamond","EB Garamond",Georgia,serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(201,162,91,0.05), transparent 60%),
+      radial-gradient(900px 500px at -10% 100%, rgba(90,122,156,0.06), transparent 60%),
+      var(--bg);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.91 0 0 0 0 0.88 0 0 0 0 0.82 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity:.5;mix-blend-mode:screen;
+  }
+  button{font-family:inherit;color:inherit;border:none;background:none;cursor:pointer}
+  input,textarea,select{font-family:inherit;color:inherit}
+  ::selection{background:rgba(201,162,91,0.3);color:var(--ink)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(232,226,210,0.08)}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(232,226,210,0.16)}
+  @keyframes pinPulse {
+    0%,100%{ box-shadow: 0 0 0 0 rgba(201,162,91,0.5), 0 0 12px rgba(201,162,91,0.4); }
+    50%{ box-shadow: 0 0 0 8px rgba(201,162,91,0), 0 0 22px rgba(201,162,91,0.7); }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="sidebar.jsx"></script>
+<script type="text/babel" src="maps-data.jsx"></script>
+<script type="text/babel" src="maps-canvas.jsx"></script>
+<script type="text/babel" src="maps-app.jsx"></script>
+</body>
+</html>

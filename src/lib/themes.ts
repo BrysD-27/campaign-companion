@@ -1,5 +1,5 @@
 export type BaseColorId = 'neutral' | 'stone' | 'zinc' | 'mauve' | 'olive' | 'mist' | 'taupe'
-export type ThemeColorId = 'amber' | 'blue' | 'cyan' | 'emerald' | 'fuchsia' | 'green' | 'indigo' | 'lime' | 'orange' | 'pink' | 'purple' | 'red' | 'rose' | 'sky' | 'teal' | 'violet' | 'yellow'
+export type ThemeColorId = 'amber' | 'blue' | 'cyan' | 'emerald' | 'fuchsia' | 'gold' | 'green' | 'indigo' | 'lime' | 'orange' | 'pink' | 'purple' | 'red' | 'rose' | 'sky' | 'teal' | 'violet' | 'yellow'
 
 interface VarMap { light: Record<string, string>; dark: Record<string, string> }
 export interface ColorMeta { label: string; swatch: string }
@@ -149,6 +149,31 @@ export const THEME_COLOR_DATA: Record<ThemeColorId, ColorMeta & VarMap> = {
     cyan: { label: 'Cyan', swatch: '#06b6d4', ...makeTheme(200, 0.13) },
     emerald: { label: 'Emerald', swatch: '#10b981', ...makeTheme(162, 0.14) },
     fuchsia: { label: 'Fuchsia', swatch: '#d946ef', ...makeTheme(320, 0.22) },
+    gold: {
+        label: 'Gold', swatch: '#c9a25b',
+        light: {
+            '--primary': 'oklch(0.733 0.101 81)',
+            '--primary-foreground': 'oklch(0.20 0.02 81)',
+            '--sidebar-primary': 'oklch(0.693 0.101 81)',
+            '--sidebar-primary-foreground': 'oklch(0.20 0.02 81)',
+            '--chart-1': 'oklch(0.855 0.081 81)',
+            '--chart-2': 'oklch(0.704 0.101 81)',
+            '--chart-3': 'oklch(0.600 0.086 81)',
+            '--chart-4': 'oklch(0.511 0.101 81)',
+            '--chart-5': 'oklch(0.437 0.086 81)',
+        },
+        dark: {
+            '--primary': 'oklch(0.65 0.101 81)',
+            '--primary-foreground': 'oklch(0.20 0.02 81)',
+            '--sidebar-primary': 'oklch(0.70 0.101 81)',
+            '--sidebar-primary-foreground': 'oklch(0.20 0.02 81)',
+            '--chart-1': 'oklch(0.855 0.081 81)',
+            '--chart-2': 'oklch(0.704 0.101 81)',
+            '--chart-3': 'oklch(0.600 0.086 81)',
+            '--chart-4': 'oklch(0.511 0.101 81)',
+            '--chart-5': 'oklch(0.437 0.086 81)',
+        },
+    },
     green: { label: 'Green', swatch: '#22c55e', ...makeTheme(145, 0.17) },
     indigo: { label: 'Indigo', swatch: '#6366f1', ...makeTheme(275, 0.20) },
     lime: { label: 'Lime', swatch: '#84cc16', ...makeTheme(130, 0.20, true) },

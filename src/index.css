@@ -17,6 +17,13 @@
   --color-danger: #c0392b;
   --color-success: #2e7d52;
   --gold: #c9a25b;
+  --crimson: #8a3a3a;
+  --slate-blue: #5a7a9c;
+  --rarity-common:    #8a8676;
+  --rarity-uncommon:  #7a9c5a;
+  --rarity-rare:      #5a7a9c;
+  --rarity-epic:      #9c7ac9;
+  --rarity-legendary: #c9a25b;
 
   --font-sans: "Inter Variable", sans-serif;
   --font-heading: var(--font-sans);
@@ -392,6 +399,11 @@ button {
   --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.547 0.021 43.1);
+}
+
+@keyframes modePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
 }
 
 @layer base {

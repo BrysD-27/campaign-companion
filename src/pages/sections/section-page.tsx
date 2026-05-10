@@ -228,206 +228,218 @@ const SectionPage = () => {
     if (!section) return <p className="p-6 text-sm text-muted-foreground">Section not found.</p>
 
     return (
-        <div className="p-6 space-y-6 mb-50">
-
-            {/* Breadcrumbs */}
-            <Breadcrumb>
-                <BreadcrumbList>
-                    {section.ancestry.map((crumb) => (
-                        <Fragment key={crumb.sectionId}>
+        <div
+            className="-m-6 flex flex-col overflow-hidden mb-50"
+            style={{ height: 'calc(100vh - var(--header-height))' }}
+        >
+            <div
+                className="flex items-center gap-4 border-b border-border bg-card shrink-0 mb-6"
+                style={{ padding: '16px 24px 14px' }}
+            >
+                <div className='flex-grow-1'>
+                    {/* Breadcrumbs */}
+                    <Breadcrumb className='mb-2'>
+                        <BreadcrumbList>
+                            {section.ancestry.map((crumb) => (
+                                <Fragment key={crumb.sectionId}>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink
+                                            className="cursor-pointer"
+                                            onClick={() => navigate(`/campaigns/${campaignId}/sections/${crumb.sectionId}`)}
+                                        >
+                                            {crumb.title}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                </Fragment>
+                            ))}
                             <BreadcrumbItem>
-                                <BreadcrumbLink
-                                    className="cursor-pointer"
-                                    onClick={() => navigate(`/campaigns/${campaignId}/sections/${crumb.sectionId}`)}
-                                >
-                                    {crumb.title}
-                                </BreadcrumbLink>
+                                <BreadcrumbPage>{section.title}</BreadcrumbPage>
                             </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                        </Fragment>
-                    ))}
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>{section.title}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+                        </BreadcrumbList>
+                    </Breadcrumb>
 
-            {/* Header */}
-            <div className="flex flex-wrap items-start justify-between gap-4">
-                {section.parentSectionId && isDM ? (
-                    inlineEditing ? (
-                        <div className="flex items-center gap-2 w-full sm:w-auto">
-                            <input
-                                autoFocus
-                                className="text-2xl font-medium bg-transparent border-b border-border focus:outline-none min-w-0 flex-1"
-                                value={inlineEditTitle}
-                                onChange={(e) => setInlineEditTitle(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') updateSection({ title: inlineEditTitle });
-                                    if (e.key === 'Escape') setInlineEditing(false);
-                                }}
-                            />
-                            <Button size="icon" variant="ghost" className="shrink-0" disabled={isUpdatePending || !inlineEditTitle.trim()} onClick={() => updateSection({ title: inlineEditTitle })}>
-                                <Check className="size-4" />
-                            </Button>
-                            <Button size="icon" variant="ghost" className="shrink-0" onClick={() => setInlineEditing(false)}>
-                                <X className="size-4" />
-                            </Button>
-                        </div>
-                    ) : (
-                        <div className="flex items-center gap-2 group">
-                            <h1 className="text-2xl font-medium">{section.title}</h1>
-                            {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
-                            <Button
-                                size="icon" variant="ghost"
-                                className=""
-                                onClick={() => { setInlineEditTitle(section.title); setInlineEditing(true); }}
-                            >
-                                <Pencil className="size-4" />
-                            </Button>
-                        </div>
-                    )
-                ) : (
-                    <div className="flex items-center gap-2">
-                        <h1 className="text-2xl font-medium">{section.title}</h1>
-                        {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
+                    {/* Header */}
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                        {section.parentSectionId && isDM ? (
+                            inlineEditing ? (
+                                <div className="flex items-center gap-2 w-full sm:w-auto">
+                                    <input
+                                        autoFocus
+                                        className="text-2xl font-medium bg-transparent border-b border-border focus:outline-none min-w-0 flex-1"
+                                        value={inlineEditTitle}
+                                        onChange={(e) => setInlineEditTitle(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') updateSection({ title: inlineEditTitle });
+                                            if (e.key === 'Escape') setInlineEditing(false);
+                                        }}
+                                    />
+                                    <Button size="icon" variant="ghost" className="shrink-0" disabled={isUpdatePending || !inlineEditTitle.trim()} onClick={() => updateSection({ title: inlineEditTitle })}>
+                                        <Check className="size-4" />
+                                    </Button>
+                                    <Button size="icon" variant="ghost" className="shrink-0" onClick={() => setInlineEditing(false)}>
+                                        <X className="size-4" />
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2 group">
+                                    <h1 className="text-2xl font-medium">{section.title}</h1>
+                                    {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
+                                    <Button
+                                        size="icon" variant="ghost"
+                                        className=""
+                                        onClick={() => { setInlineEditTitle(section.title); setInlineEditing(true); }}
+                                    >
+                                        <Pencil className="size-4" />
+                                    </Button>
+                                </div>
+                            )
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-2xl font-medium">{section.title}</h1>
+                                {section.isDmOnly && <Badge variant="secondary">DM only</Badge>}
+                            </div>
+                        )}
+                        {
+                            isDM && (
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {!section.parentSectionId && (
+                                        <Button variant="outline" size="sm" onClick={() => setEditDialogOpen(true)}>
+                                            <Pencil />
+                                            Edit
+                                        </Button>
+                                    )}
+                                    <ShareSectionPopover
+                                        section={section}
+                                        members={members}
+                                        campaignId={campaignId!}
+                                        sectionId={sectionId!}
+                                        token={token!}
+                                    />
+                                    <Button variant="outline" size="sm" className="!text-destructive border-destructive hover:!bg-destructive/10" onClick={() => setDeleteDialogOpen(true)}>
+                                        <Trash2 />
+                                        Delete
+                                    </Button>
+                                </div>
+                            )
+                        }
                     </div>
-                )}
-                {
-                    isDM && (
-                        <div className="flex flex-wrap items-center gap-2">
-                            {!section.parentSectionId && (
-                                <Button variant="outline" size="sm" onClick={() => setEditDialogOpen(true)}>
-                                    <Pencil />
-                                    Edit
+
+                </div>
+            </div>
+
+            <div className='px-11 space-y-6'>
+                {/* Subsections */}
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Subsections</p>
+                        {
+                            isDM && (
+                                <Button variant="outline" size="sm" onClick={() => setSubsectionDialogOpen(true)}>
+                                    <Plus />
+                                    Add subsection
                                 </Button>
-                            )}
-                            <ShareSectionPopover
-                                section={section}
-                                members={members}
+                            )
+                        }
+                    </div>
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                        <SortableContext items={orderedSubSections.map(s => s.sectionId)} strategy={rectSortingStrategy}>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                                {orderedSubSections.map((sub) => (
+                                    <SortableSubSection
+                                        key={sub.sectionId}
+                                        sub={sub}
+                                        isDM={isDM}
+                                        campaignId={campaignId!}
+                                        onNavigate={() => navigate(`/campaigns/${campaignId}/sections/${sub.sectionId}`)}
+                                        onPin={pinSection}
+                                    />
+                                ))}
+                                {
+                                    isDM && (
+                                        <button
+                                            onClick={() => setSubsectionDialogOpen(true)}
+                                            className="flex items-center gap-2 p-3 hover:bg-accent rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                                        >
+                                            <Plus className="h-4 w-4" />
+                                            Add subsection
+                                        </button>
+                                    )
+                                }
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                </div>
+
+                {/* Entries */}
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Entries</p>
+                        {isDM && !addingEntry && (
+                            <div className='flex flex-wrap items-center gap-2'>
+                                <Button variant="outline" size="sm" onClick={() => setReorderEntriesOpen(true)}>
+                                    <ArrowUpDown />
+                                    Reorder
+                                </Button>
+                                <Button variant="outline" size="sm" onClick={() => setAddingEntry(true)}>
+                                    <Plus />
+                                    Add entry
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <div className="space-y-3">
+                        {entries.map((entry) => (
+                            <EntryCard
+                                key={entry.entryId}
+                                entry={entry}
                                 campaignId={campaignId!}
                                 sectionId={sectionId!}
                                 token={token!}
+                                isDM={isDM}
+                                members={members}
                             />
-                            <Button variant="outline" size="sm" className="!text-destructive border-destructive hover:!bg-destructive/10" onClick={() => setDeleteDialogOpen(true)}>
-                                <Trash2 />
-                                Delete
-                            </Button>
-                        </div>
-                    )
-                }
-            </div>
-
-            {/* Subsections */}
-            <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Subsections</p>
-                    {
-                        isDM && (
-                            <Button variant="outline" size="sm" onClick={() => setSubsectionDialogOpen(true)}>
-                                <Plus />
-                                Add subsection
-                            </Button>
-                        )
-                    }
-                </div>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext items={orderedSubSections.map(s => s.sectionId)} strategy={rectSortingStrategy}>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                            {orderedSubSections.map((sub) => (
-                                <SortableSubSection
-                                    key={sub.sectionId}
-                                    sub={sub}
-                                    isDM={isDM}
-                                    campaignId={campaignId!}
-                                    onNavigate={() => navigate(`/campaigns/${campaignId}/sections/${sub.sectionId}`)}
-                                    onPin={pinSection}
-                                />
-                            ))}
-                            {
-                                isDM && (
-                                    <button
-                                        onClick={() => setSubsectionDialogOpen(true)}
-                                        className="flex items-center gap-2 p-3 hover:bg-accent rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                                    >
-                                        <Plus className="h-4 w-4" />
-                                        Add subsection
-                                    </button>
-                                )
-                            }
-                        </div>
-                    </SortableContext>
-                </DndContext>
-            </div>
-
-            {/* Entries */}
-            <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Entries</p>
-                    {isDM && !addingEntry && (
-                        <div className='flex flex-wrap items-center gap-2'>
-                            <Button variant="outline" size="sm" onClick={() => setReorderEntriesOpen(true)}>
-                                <ArrowUpDown />
-                                Reorder
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => setAddingEntry(true)}>
-                                <Plus />
+                        ))}
+                        {addingEntry && (
+                            <NewEntryCard
+                                campaignId={campaignId!}
+                                sectionId={sectionId!}
+                                token={token!}
+                                sortOrder={entries.length}
+                                onClose={() => setAddingEntry(false)}
+                            />
+                        )}
+                        {isDM && !addingEntry && (
+                            <button
+                                onClick={() => setAddingEntry(true)}
+                                className="flex items-center hover:bg-accent gap-2 p-3 w-full rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                            >
+                                <Plus className="h-4 w-4" />
                                 Add entry
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div className="space-y-3">
-                    {entries.map((entry) => (
-                        <EntryCard
-                            key={entry.entryId}
-                            entry={entry}
-                            campaignId={campaignId!}
-                            sectionId={sectionId!}
-                            token={token!}
-                            isDM={isDM}
-                            members={members}
-                        />
-                    ))}
-                    {addingEntry && (
-                        <NewEntryCard
-                            campaignId={campaignId!}
-                            sectionId={sectionId!}
-                            token={token!}
-                            sortOrder={entries.length}
-                            onClose={() => setAddingEntry(false)}
-                        />
-                    )}
-                    {isDM && !addingEntry && (
-                        <button
-                            onClick={() => setAddingEntry(true)}
-                            className="flex items-center hover:bg-accent gap-2 p-3 w-full rounded-lg border border-dashed text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                        >
-                            <Plus className="h-4 w-4" />
-                            Add entry
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            <Separator />
-
-            {/* Player notes */}
-            <div className="space-y-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Player notes</p>
-                {section.shares.map((share) => (
-                    <div key={share.campaignMemberId} className="space-y-2">
-                        <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-medium text-blue-800 shrink-0">
-                                {share.characterName.slice(0, 2).toUpperCase()}
-                            </div>
-                            <p className="text-sm font-medium">{share.characterName}</p>
-                        </div>
-                        <div className="bg-muted rounded-md px-3 py-2 text-sm text-muted-foreground leading-relaxed ml-9">
-                            No notes yet.
-                        </div>
+                            </button>
+                        )}
                     </div>
-                ))}
+                </div>
+
+                <Separator />
+
+                {/* Player notes */}
+                <div className="space-y-4">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Player notes</p>
+                    {section.shares.map((share) => (
+                        <div key={share.campaignMemberId} className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-7 w-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-medium text-blue-800 shrink-0">
+                                    {share.characterName.slice(0, 2).toUpperCase()}
+                                </div>
+                                <p className="text-sm font-medium">{share.characterName}</p>
+                            </div>
+                            <div className="bg-muted rounded-md px-3 py-2 text-sm text-muted-foreground leading-relaxed ml-9">
+                                No notes yet.
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
             <DeleteSectionModal open={deleteDialogOpen}
                 onOpenChange={setDeleteDialogOpen}
