@@ -115,7 +115,7 @@ function AppSidebar() {
             <div className="px-2 py-1">
               <p className="text-sm font-medium text-foreground">{campaign.title}</p>
               <p className="text-xs text-muted-foreground">
-                {isDM ? 'Dungeon Master' : 'Player'}
+                Dashboard
               </p>
             </div>
           </SidebarMenuButton>

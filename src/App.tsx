@@ -24,6 +24,7 @@ import MapsPage from './pages/maps/maps-page'
 import SectionPage from './pages/sections/section-page'
 import SessionsPage from './pages/sessions/sessions-page'
 import SettingsPage from './pages/settings-page'
+import InventoryPage from './pages/inventory/inventory-page'
 
 function ThemeApplier() {
   const { user } = useAuth()
@@ -83,7 +84,7 @@ function App() {
                 }>
                   {/* child routes — each renders inside the Outlet */}
                   <Route path="sessions" element={<SessionsPage />} />
-                  {/* <Route path="inventory" element={<InventoryPage />} /> */}
+                  <Route path="inventory" element={<InventoryPage />} />
                   <Route path="maps" element={<MapsPage />} />
                   <Route path="sections/:sectionId" element={<SectionPage />} />
                 </Route>
